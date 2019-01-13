@@ -35,12 +35,12 @@
                         </span>
                 </v-tooltip>
 
-                <span class="justify-self-center">
+                <span class="justify-self-center" @click.stop="rateTooltip = !rateTooltip">
                     <!-- TODO: Align this to the center -->
 
                     Available Requests: {{ rate.remaining }} / {{ rate.limit }}
 
-                    <v-icon right small @click.stop="rateTooltip = !rateTooltip">fas fa-question-circle</v-icon>
+                    <v-icon right small>fas fa-question-circle</v-icon>
                 </span>
             </v-toolbar>
 
@@ -57,11 +57,13 @@
         </v-navigation-drawer>
 
         <v-content>
-            <p v-for="repo in repos" :key="repo['id']">
-                <a :href="repo['html_url']" target="_blank">
-                    {{ repo['full_name'] }}
-                </a>
-            </p>
+            <v-container>
+                <p v-for="repo in repos" :key="repo['id']">
+                    <a :href="repo['html_url']" target="_blank">
+                        {{ repo['full_name'] }}
+                    </a>
+                </p>
+            </v-container>
         </v-content>
     </v-app>
 </template>
