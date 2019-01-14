@@ -19,50 +19,62 @@
                 </v-btn>
             </v-toolbar>
 
-            <v-toolbar flat dense>
-                <v-tooltip bottom color="#0a0a0a" v-model="rateTooltip">
-                    <span slot="activator"></span>
-                    <span>
+            <v-list two-line style="background-color: #212121">
+                <v-list-tile>
+                    <v-list-tile-content>
+                        <v-list-tile-title class="text-xs-center" @click.stop="rateTooltip = !rateTooltip">
+                            <!-- TODO: Align this to the center -->
+
+                            Available Requests: {{ rate.remaining }} / {{ rate.limit }}
+
+                            <v-icon right small>fas fa-question-circle</v-icon>
+                        </v-list-tile-title>
+
+                        <v-list-tile-sub-title v-if="rate.reset" class="text-xs-center">
+                            Resets in {{ timeToRateReset }} seconds...
+                        </v-list-tile-sub-title>
+                    </v-list-tile-content>
+
+                    <v-tooltip bottom color="#0a0a0a" v-model="rateTooltip">
+                        <span slot="activator"></span>
+                        <span>
                             This is the available requests' count your computer have to ping Github's servers in order
                             to search for the selected topics.
                             <br>
-                            This count resets every minute after first request.
+                            This count resets every minute.
                             <br>
                             To learn more about it please refer to
                             <a href="https://developer.github.com/v3/search/#rate-limit" target="_blank">
                                 Github's Documentation
                             </a>
                         </span>
-                </v-tooltip>
+                    </v-tooltip>
+                </v-list-tile>
+            </v-list>
 
-                <span class="justify-self-center" @click.stop="rateTooltip = !rateTooltip">
-                    <!-- TODO: Align this to the center -->
+            <v-divider></v-divider>
 
-                    Available Requests: {{ rate.remaining }} / {{ rate.limit }}
-
-                    <v-icon right small>fas fa-question-circle</v-icon>
-                </span>
-            </v-toolbar>
-
-            <v-list>
+            <v-list dense>
                 <v-list-tile v-for="(topic, index) in topics" :key="index">
-                    <v-list-tile-title>
-                        <label>
-                            <input type="checkbox" :id="topic" :value="topic" v-model="selectedTopics">
-                            {{ topic.toUpperCase() }}
-                        </label>
-                    </v-list-tile-title>
+                    <v-list-tile-action>
+                        <v-checkbox :label="topic.toUpperCase()" :value="topic" v-model="selectedTopics"></v-checkbox>
+                    </v-list-tile-action>
                 </v-list-tile>
             </v-list>
         </v-navigation-drawer>
 
         <v-content>
-            <v-container>
-                <p v-for="repo in repos" :key="repo['id']">
-                    <a :href="repo['html_url']" target="_blank">
-                        {{ repo['full_name'] }}
-                    </a>
-                </p>
+            <v-container grid-list-lg>
+                <v-alert :value="rateLimitExceeded" type="warning" transition="expand-transition">
+                    You've exceeded Github's Search API Rate Limits.
+                    Content on this page will not update until rate limit resets.
+                </v-alert>
+
+                <v-layout row wrap justify-center>
+                    <v-flex xs12 sm10 md8 v-for="repo in repos" :key="repo['id']">
+                        <repo-card :data="repo"></repo-card>
+                    </v-flex>
+                </v-layout>
             </v-container>
         </v-content>
     </v-app>
@@ -70,9 +82,14 @@
 
 <script>
     import axios from 'axios'
+    import moment from 'moment'
+    import RepoCard from '@/components/RepoCard'
 
     export default {
         name: 'App',
+        components: {
+            'repo-card': RepoCard
+        },
         data() {
             return {
                 drawer: null,
@@ -86,10 +103,11 @@
                 ],
                 repos: [],
                 rate: {
-                    limit: 0,
-                    remaining: 0,
+                    limit: null,
+                    remaining: null,
                     reset: null
                 },
+                timeToRateReset: null,
                 token: null
             }
         },
@@ -98,10 +116,20 @@
                 this.fetchData()
             }
         },
+        computed: {
+            rateLimitExceeded() {
+                return this.rate.remaining != null && this.rate.remaining < 1
+            }
+        },
         methods: {
             fetchData() {
                 if (this.selectedTopics.length < 1) {
                     console.log('Fetch skipped')
+                    return
+                }
+
+                if (this.rateLimitExceeded) {
+                    console.log('Search Rate Limit exceeded. Fetch skipped')
                     return
                 }
 
@@ -116,10 +144,10 @@
                         console.log(error)
                     })
                     .then(() => {
-                        this.remainingLimit()
+                        this.getRateLimit()
                     })
             },
-            remainingLimit() {
+            getRateLimit() {
                 axios.get('https://api.github.com/rate_limit')
                     .then((response) => {
                         this.rate = response.data['resources']['search']
@@ -127,10 +155,26 @@
                     .catch((error) => {
                         console.log(error)
                     })
+            },
+            updateRateLimit() {
+                if (this.rate.reset) {
+                    let resets = moment.unix(this.rate.reset)
+                    let diff = resets.diff(moment(), 'seconds')
+
+                    if (diff > 0) {
+                        this.timeToRateReset = diff
+                    } else {
+                        this.timeToRateReset = null
+                        this.rate.reset = null
+
+                        this.rate.remaining = this.rate.limit
+                    }
+                }
             }
         },
         beforeMount() {
             this.fetchData()
+            setInterval(this.updateRateLimit, 1000)
         }
     }
 </script>
