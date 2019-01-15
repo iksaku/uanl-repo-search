@@ -8,17 +8,28 @@
             </a>
         </div>
         <div class="gc-status">
-            <a href="" v-if="data['language']">
+            <a :href="data['html_url']">
                 <v-icon small>fas fa-code</v-icon>
-                <span> {{ data['language'] }}</span>
+
+                <span v-if="data['language']">
+                    {{ data['language'] }}
+                </span>
+                <span v-else><i>N/A</i></span>
             </a>
-            <a href="">
+            <a :href="data['html_url'] + '/stargazers'">
                 <v-icon small>fas fa-star</v-icon>
-                <span> {{ data['stargazers_count'] }}</span>
+
+                <span>
+                    {{ data['stargazers_count'] }}
+                </span>
             </a>
-            <a v-if="data['license']" :href="data['license']['url']">
+            <a :href="data['html_url']">
                 <v-icon small>fas fa-balance-scale</v-icon>
-                <span> {{ data['license']['spdx_id'] }}</span>
+
+                <span v-if="data['license']">
+                    {{ data['license']['spdx_id'] }}
+                </span>
+                <span v-else><i>N/A</i></span>
             </a>
         </div>
     </div>
@@ -191,7 +202,8 @@
                 margin-top: -16px;
                 margin-left: -16px;
                 animation: breathe 2s ease-in-out infinite;
-                -webkit-animation: breathe 2s ease-in-out infinite}
+                -webkit-animation: breathe 2s ease-in-out infinite;
+            }
         }
     }
 
