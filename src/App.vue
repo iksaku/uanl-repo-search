@@ -135,7 +135,7 @@
 
                 let query = this.selectedTopics.map(topic => 'topic:' + topic).join('+')
 
-                axios.get('https://api.github.com/search/repositories?q=' + query)
+                axios.get('https://api.github.com/search/repositories?q=' + query + '&sort=updated&order=desc')
                     .then((response) => {
                         console.log(response.data.items)
                         this.repos = response.data.items

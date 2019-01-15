@@ -2,13 +2,13 @@
     <div class="gitcards gc-repo-wrap">
         <div class="gc-repo">
             <img class="gc-icon" :src="data['owner']['avatar_url']"  :alt="data['owner']['login'] + ' Avatar'"/>
-            <a :href="data['html_url']">
+            <a :href="data['html_url']" target="_blank">
                 <span class="gc-reponame">{{ data['full_name'] }}</span>
                 <span class="gc-respodesc">{{ data['description'] }}</span>
             </a>
         </div>
         <div class="gc-status">
-            <a :href="data['html_url']">
+            <a :href="data['html_url']" target="_blank">
                 <v-icon small>fas fa-code</v-icon>
 
                 <span v-if="data['language']">
@@ -16,14 +16,14 @@
                 </span>
                 <span v-else><i>N/A</i></span>
             </a>
-            <a :href="data['html_url'] + '/stargazers'">
+            <a :href="data['html_url'] + '/stargazers'" target="_blank">
                 <v-icon small>fas fa-star</v-icon>
 
                 <span>
                     {{ data['stargazers_count'] }}
                 </span>
             </a>
-            <a :href="data['html_url']">
+            <a :href="data['html_url']" target="_blank">
                 <v-icon small>fas fa-balance-scale</v-icon>
 
                 <span v-if="data['license']">
