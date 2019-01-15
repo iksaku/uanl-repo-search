@@ -8,7 +8,7 @@
             </a>
         </div>
         <div class="gc-status">
-            <a :href="data['html_url']" target="_blank">
+            <a :href="data['html_url'] + (!data['language'] ? '' : '/search?l=' + data['language'].toLowerCase())" target="_blank">
                 <v-icon small>fas fa-code</v-icon>
 
                 <span v-if="data['language']">
@@ -23,7 +23,7 @@
                     {{ data['stargazers_count'] }}
                 </span>
             </a>
-            <a :href="data['html_url']" target="_blank">
+            <a :href="data['html_url'] + '/blob/master/LICENSE'" target="_blank">
                 <v-icon small>fas fa-balance-scale</v-icon>
 
                 <span v-if="data['license']">
