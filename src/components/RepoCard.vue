@@ -30,7 +30,7 @@
                     {{ data['stargazers_count'] }}
                 </span>
             </a>
-            <a :href="data['html_url'] + '/blob/master/LICENSE'" target="_blank">
+            <a :href="data['html_url'] + (!data['license'] ? '' : '/blob/master/LICENSE')" target="_blank">
                 <v-icon small>fas fa-balance-scale</v-icon>
 
                 <span v-if="data['license']">
