@@ -6,6 +6,13 @@
                 <span class="gc-reponame">{{ data['full_name'] }}</span>
                 <span class="gc-respodesc">{{ data['description'] }}</span>
             </a>
+            <a :href="data['homepage'] || '#'" target="_blank">
+                <span v-if="data['homepage']" class="gc-repohomepage">
+                    <v-icon small>fas fa-link</v-icon>
+                    {{ data['homepage']}}
+                </span>
+                <span v-else><br></span>
+            </a>
         </div>
         <div class="gc-status">
             <a :href="data['html_url'] + (!data['language'] ? '' : '/search?l=' + data['language'].toLowerCase())" target="_blank">
@@ -183,7 +190,7 @@
             }
         }
 
-        .gc-repodesc {
+        .gc-repodesc, .gc-repohomepage {
             font-size: 13px;
             color: #666;
         }
