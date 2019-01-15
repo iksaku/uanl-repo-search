@@ -64,14 +64,14 @@
         </v-navigation-drawer>
 
         <v-content>
-            <v-container grid-list-lg>
+            <v-container grid-list-md>
                 <v-alert :value="rateLimitExceeded" type="warning" transition="expand-transition">
                     You've exceeded Github's Search API Rate Limits.
                     Content on this page will not update until rate limit resets.
                 </v-alert>
 
                 <v-layout row wrap justify-center>
-                    <v-flex xs12 sm10 md8 v-for="repo in repos" :key="repo['id']">
+                    <v-flex xs12 sm10 md6 v-for="repo in repos" :key="repo['id']" style="margin-top: 2vh;">
                         <repo-card :data="repo"></repo-card>
                     </v-flex>
                 </v-layout>

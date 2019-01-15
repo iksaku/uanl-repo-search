@@ -12,7 +12,9 @@
     "@fortawesome/fontawesome-free": "^5.2.0",
     "axios": "^0.18.0",
     "moment": "^2.23.0",
+    "node-sass": "^4.11.0",
     "roboto-fontface": "*",
+    "sass-loader": "^7.1.0",
     "stylus-loader": "^3.0.2",
     "vue": "^2.5.22",
     "vuetify": "^1.4.1"
