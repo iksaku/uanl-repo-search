@@ -124,12 +124,10 @@
         methods: {
             fetchData() {
                 if (this.selectedTopics.length < 1) {
-                    console.log('Fetch skipped')
                     return
                 }
 
                 if (this.rateLimitExceeded) {
-                    console.log('Search Rate Limit exceeded. Fetch skipped')
                     return
                 }
 
@@ -137,13 +135,9 @@
 
                 axios.get('https://api.github.com/search/repositories?q=' + query + '&sort=updated&order=desc')
                     .then((response) => {
-                        console.log(response.data.items)
                         this.repos = response.data.items
                     })
-                    .catch((error) => {
-                        console.log(error)
-                    })
-                    .then(() => {
+                    .finally(() => {
                         this.getRateLimit()
                     })
             },
@@ -151,9 +145,6 @@
                 axios.get('https://api.github.com/rate_limit')
                     .then((response) => {
                         this.rate = response.data['resources']['search']
-                    })
-                    .catch((error) => {
-                        console.log(error)
                     })
             },
             updateRateLimit() {
@@ -174,7 +165,6 @@
         },
         beforeMount() {
             this.fetchData()
-            setInterval(this.updateRateLimit, 1000)
         }
     }
 </script>
