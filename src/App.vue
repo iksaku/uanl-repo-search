@@ -82,7 +82,7 @@
 
 <script>
     import axios from 'axios'
-    import moment from 'moment'
+    import dayjs from 'dayjs'
     import RepoCard from '@/components/RepoCard'
 
     export default {
@@ -114,7 +114,7 @@
         watch: {
             selectedTopics() {
                 this.fetchData()
-            }
+            },
         },
         computed: {
             rateLimitExceeded() {
@@ -146,14 +146,17 @@
                     .then((response) => {
                         this.rate = response.data['resources']['search']
                     })
+                    .finally(() => this.updateRateLimit())
             },
             updateRateLimit() {
                 if (this.rate.reset) {
-                    let resets = moment.unix(this.rate.reset)
-                    let diff = resets.diff(moment(), 'seconds')
+                    let resets = dayjs.unix(this.rate.reset)
+                    let diff = resets.diff(dayjs(), 'seconds')
 
                     if (diff > 0) {
                         this.timeToRateReset = diff
+
+                        setInterval(this.updateRateLimit, 500)
                     } else {
                         this.timeToRateReset = null
                         this.rate.reset = null
