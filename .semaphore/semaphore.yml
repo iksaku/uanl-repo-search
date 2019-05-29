@@ -1,0 +1,40 @@
+version: v1.0
+name: First pipeline example
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: "Install Dependencies"
+    task:
+      env_vars:
+        - name: APP_ENV
+          value: prod
+      jobs:
+      - name: Install
+        commands:
+          - checkout
+          - cache restore node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),node-modules-$SEMAPHORE_GIT_BRANCH,node-modules-master
+          - yarn install
+          - cache store node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json) node_modules
+
+  - name: "Unit tests"
+    task:
+      prologue:
+        commands:
+          - checkout
+          - cache restore node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),node-modules-$SEMAPHORE_GIT_BRANCH,node-modules-master
+      jobs:
+      - name: Lint code
+        commands:
+          - yarn lint
+
+  - name: "Build application"
+    task:
+      jobs:
+      - name: Build
+        commands:
+          - checkout
+          - cache restore node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),node-modules-$SEMAPHORE_GIT_BRANCH,node-modules-master
+          - yarn build
