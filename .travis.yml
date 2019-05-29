@@ -1,23 +1,28 @@
 sudo: false
+
 language: node_js
 node_js:
   - "8"
 
 cache: yarn
 
-script: true
+stages:
+  - precache
+  - test
+  - build
 
 jobs:
-  # Install Dependencies
-  - stage: Install Dependencies
-    script: true
+  include:
+    # Install Dependencies
+    - stage: precache
+      script: true
 
-  # Run tests
-  - stage: Test
-    script: yarn lint
+    # Run tests
+    - stage: test
+      script: yarn lint
 
-  # Build application
-  - stage: Build
-    script: yarn build
-  
-  # TODO: Deploy?
+    # Build application
+    - stage: build
+      script: yarn build
+    
+    # TODO: Deploy?
