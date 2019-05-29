@@ -5,6 +5,8 @@ node_js:
 
 cache: yarn
 
+script: true
+
 jobs:
   # Install Dependencies
   - stage: Install Dependencies
