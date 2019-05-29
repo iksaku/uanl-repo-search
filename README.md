@@ -1,4 +1,4 @@
-# uanl-repo-search
+# uanl-repo-search [![Build Status](https://travis-ci.org/iksaku/uanl-repo-search.svg?branch=master)](https://travis-ci.org/iksaku/uanl-repo-search)
 
 ## Project setup
 ```
