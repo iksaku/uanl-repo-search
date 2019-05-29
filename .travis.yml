@@ -16,8 +16,8 @@ jobs:
     - stage: test
       script: yarn lint
 
-    # Build and Deploy application
-    - stage: build
+    # Deploy application
+    - stage: deploy
       script: yarn build
       deploy:
         provider: pages
