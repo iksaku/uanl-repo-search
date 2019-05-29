@@ -1,0 +1,21 @@
+sudo: false
+language: node_js
+node_js:
+  - "8"
+
+cache: yarn
+
+jobs:
+  # Install Dependencies
+  - stage: Install Dependencies
+    script: yarn install
+
+  # Run tests
+  - stage: Test
+    script: yarn lint
+
+  # Build application
+  - stage: Build
+    script: yarn build
+  
+  # TODO: Deploy?

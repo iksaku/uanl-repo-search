@@ -114,7 +114,7 @@
         watch: {
             selectedTopics() {
                 this.fetchData()
-            },
+            }
         },
         computed: {
             rateLimitExceeded() {
