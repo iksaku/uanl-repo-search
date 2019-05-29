@@ -6,11 +6,6 @@ node_js:
 
 cache: yarn
 
-stages:
-  - precache
-  - test
-  - build
-
 jobs:
   include:
     # Install Dependencies
