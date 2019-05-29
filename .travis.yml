@@ -8,7 +8,7 @@ cache: yarn
 jobs:
   # Install Dependencies
   - stage: Install Dependencies
-    script: yarn install
+    script: true
 
   # Run tests
   - stage: Test
