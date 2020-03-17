@@ -10,7 +10,7 @@
             
             <button
                 
-                class="lg:hidden"
+                class=""
             >
                 <span class="text-2xl fas fa-times"></span>
             </button>
@@ -23,16 +23,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
-import { useSidebar } from '@/plugins/store/sidebar';
+import { defineComponent } from '@vue/composition-api'
+// import { useSidebar } from '@/plugins/store/sidebar'
 
 export default defineComponent({
     name: 'Sidebar',
 
     setup() {
-        return {
-            ...useSidebar()
-        }
+        // console.log(useSidebar())
+
+        // return {
+        //     ...useSidebar()
+        // }
     }
 })
 </script>

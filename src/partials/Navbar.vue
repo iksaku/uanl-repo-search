@@ -19,15 +19,15 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import { useSidebar } from '@/plugins/store/sidebar'
+//import { useSidebar } from '@/plugins/store/sidebar'
 
 export default defineComponent({
     name: 'Navbar',
 
-    setup() {
-        return {
-            ...useSidebar()
-        }
-    }
+    // setup() {
+    //     return {
+    //         ...useSidebar()
+    //     }
+    // }
 })
 </script>

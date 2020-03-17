@@ -1,23 +1,15 @@
-import { ref, computed, Ref, inject } from '@vue/composition-api'
+import { ref, inject } from '@vue/composition-api'
 
-interface SidebarStore {
-    isSidebarOpen: Readonly<Ref<boolean>>
-
-    setSidebar: (open: boolean) => void
-}
-
-const state = ref<boolean>(false)
-
-const isSidebarOpen = computed<boolean>(() => state.value)
+const isSidebarOpen = ref<boolean>(false)
 
 const setSidebar = (open: boolean): void => {
-    state.value = open
+    console.log(open)
 }
 
-const store: SidebarStore = {
+export const sidebarStore = {
     isSidebarOpen,
     setSidebar
 }
 
-export const useSidebar = () => inject<SidebarStore>(Symbol.for('SidebarStore'), store)
+export const useSidebar = () => inject('SidebarStore', sidebarStore)
 

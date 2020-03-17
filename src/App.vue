@@ -15,9 +15,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, provide } from '@vue/composition-api'
 import Sidebar from './partials/Sidebar.vue'
 import Navbar from './partials/Navbar.vue'
+import { sidebarStore, useSidebar } from '@/plugins/store/sidebar'
 
 export default defineComponent({
     name: 'App',
@@ -25,6 +26,12 @@ export default defineComponent({
     components: {
         Sidebar,
         Navbar
+    },
+
+    setup() {
+        provide('SidebarStore', sidebarStore)
+
+        console.log(useSidebar())
     }
 })
 </script>

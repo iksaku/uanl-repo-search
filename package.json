@@ -38,34 +38,6 @@
     "vue-template-compiler": "^2.6.11",
     "webpack": "^4.32.2"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended",
-      "@vue/typescript"
-    ],
-    "rules": {
-      "no-console": "error",
-      "no-debugger": "error",
-      "indent": [
-        "warn",
-        4
-      ],
-      "quotes": [
-        "warn",
-        "single"
-      ],
-      "eqeqeq": "warn"
-    },
-    "parserOptions": {
-      "parser": "@typescript-eslint/parser",
-      "ecmaVersion": 2020
-    }
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
