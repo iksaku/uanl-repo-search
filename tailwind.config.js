@@ -9,8 +9,13 @@ module.exports = {
             }
         },
     },
-    variants: {},
+    variants: {
+        cursor: [...defaultConfig.variants.cursor, 'disabled'],
+        opacity: [...defaultConfig.variants.opacity, 'disabled']
+    },
     plugins: [
+        require('@tailwindcss/custom-forms'),
+
         plugin(function ({ addVariant, e }) {
             addVariant('hocus', ({ modifySelectors, separator}) => {
                 modifySelectors(({ className }) => {

@@ -3,13 +3,11 @@ import { ref, inject } from '@vue/composition-api'
 const isSidebarOpen = ref<boolean>(false)
 
 const setSidebar = (open: boolean): void => {
-    console.log(open)
+    isSidebarOpen.value = open
 }
 
-export const sidebarStore = {
+export const useSidebar = () => inject('SidebarStore', {
     isSidebarOpen,
     setSidebar
-}
-
-export const useSidebar = () => inject('SidebarStore', sidebarStore)
+})
 

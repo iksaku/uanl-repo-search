@@ -1,5 +1,6 @@
-require('@/assets/styles.pcss')
-require('@/plugins/composition-api')
+import '@/assets/styles.pcss'
+import '@/plugins/fontawesome'
+import '@/plugins/composition-api'
 
 import Vue from 'vue';
 import App from './App.vue';
