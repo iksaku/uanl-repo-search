@@ -7,6 +7,6 @@ export { RateLimit } from './interfaces/RateLimit'
 export const client = axios.create({
     baseURL: 'https://api.github.com/',
     headers: {
-        'Accept': 'application/vnd.github.mercy-preview+json'
+        Accept: 'application/vnd.github.mercy-preview+json'
     }
 })

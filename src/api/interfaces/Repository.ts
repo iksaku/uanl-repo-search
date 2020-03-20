@@ -1,42 +1,42 @@
-import { RepositoryOwner } from './RepositoryOwner';
-import { RepositoryLicense } from './RepositoryLicense';
+import { RepositoryOwner } from './RepositoryOwner'
+import { RepositoryLicense } from './RepositoryLicense'
 
 export interface Repository {
-    id: number
-    node_id: string
+    id: number;
+    node_id: string;
 
-    name: string
-    full_name: string
-    description: string
+    name: string;
+    full_name: string;
+    description: string;
 
-    owner: RepositoryOwner
+    owner: RepositoryOwner;
 
-    license: RepositoryLicense
+    license: RepositoryLicense;
 
-    private: boolean
-    fork: boolean
+    private: boolean;
+    fork: boolean;
 
-    html_url: string
-    url: string
+    html_url: string;
+    url: string;
 
-    created_at: string
-    updated_at: string
-    pushed_at: string
+    created_at: string;
+    updated_at: string;
+    pushed_at: string;
 
-    homepage: string
+    homepage: string;
 
-    size: number
+    size: number;
 
-    stargazers_count: number
-    watchers_count: number
-    forks_count: number
+    stargazers_count: number;
+    watchers_count: number;
+    forks_count: number;
 
-    language: string
+    language: string;
 
-    open_issues_count: number
+    open_issues_count: number;
 
-    master_branch: string
-    default_branch: string
+    master_branch: string;
+    default_branch: string;
 
-    score: number
+    score: number;
 }

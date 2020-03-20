@@ -5,7 +5,7 @@
             @click="setSidebar(false)"
             class="fixed z-40 inset-0 bg-black opacity-25 lg:hidden"
         ></div>
-        
+
         <sidebar />
 
         <div class="flex-grow-0 min-w-0 w-full flex flex-col">
@@ -33,14 +33,14 @@ import Navbar from './components/Navbar.vue'
 
 export default defineComponent({
     name: 'App',
-    
+
     components: {
         RepoCard,
         Sidebar,
         Navbar
     },
 
-    setup() {
+    setup () {
         const { results } = useSearch()
 
         return {

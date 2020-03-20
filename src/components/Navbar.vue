@@ -7,7 +7,7 @@
             >
                 <fa icon="bars" />
             </button>
-            
+
             <div class="flex-shrink-1 ml-4 lg:ml-0">
                 <h1 class="text-xl md:text-2xl font-semibold">
                     UANL Repo Search
@@ -25,7 +25,7 @@
                 <span class="hidden lg:inline-block align-middle mr-2">
                     Contribuye en Github
                 </span>
-                
+
                 <fa class="inline-block align-middle" :icon="['fab', 'github']" />
             </a>
         </div>
@@ -39,10 +39,10 @@ import { useSidebar } from '@/plugins/store/sidebar'
 export default defineComponent({
     name: 'Navbar',
 
-    setup() {
+    setup () {
         const { isSidebarOpen, setSidebar } = useSidebar()
 
-        function toggle() {
+        function toggle () {
             setSidebar(!isSidebarOpen.value)
         }
 

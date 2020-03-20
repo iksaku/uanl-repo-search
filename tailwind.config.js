@@ -7,7 +7,7 @@ module.exports = {
             fontFamily: {
                 sans: ['Inter', ...defaultConfig.theme.fontFamily.sans]
             }
-        },
+        }
     },
     variants: {
         cursor: [...defaultConfig.variants.cursor, 'disabled'],
@@ -17,11 +17,11 @@ module.exports = {
         require('@tailwindcss/custom-forms'),
 
         plugin(function ({ addVariant, e }) {
-            addVariant('hocus', ({ modifySelectors, separator}) => {
+            addVariant('hocus', ({ modifySelectors, separator }) => {
                 modifySelectors(({ className }) => {
                     return `.${e(`hocus${separator}${className}`)}:hover,.${e(`hocus${separator}${className}`)}:focus`
                 })
             })
         })
-    ],
+    ]
 }

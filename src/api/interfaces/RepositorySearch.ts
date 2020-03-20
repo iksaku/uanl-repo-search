@@ -1,9 +1,9 @@
 import { Repository } from './Repository'
 
 export interface RepositorySearch {
-    total_count: number
+    total_count: number;
 
-    incomplete_results: boolean
+    incomplete_results: boolean;
 
-    items: Repository[]
+    items: Repository[];
 }

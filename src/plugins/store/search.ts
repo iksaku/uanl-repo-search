@@ -1,7 +1,6 @@
 import { client, RepositorySearch, RateLimit } from '@/api'
 import { reactive, inject } from '@vue/composition-api'
-
-const qs = require('qs')
+import qs from 'qs'
 
 const results = reactive<RepositorySearch>({
     total_count: 0,
@@ -15,7 +14,7 @@ const rateLimit = reactive<RateLimit>({
     reset: 0
 })
 
-function search(topics: string[]) {
+function search (topics: string[]) {
     if (rateLimit.remaining < 1) {
         return
     }
@@ -29,7 +28,7 @@ function search(topics: string[]) {
             order: 'desc'
         },
 
-        paramsSerializer: function(params) {
+        paramsSerializer: function (params) {
             return qs.stringify(params, {
                 encode: false
             })

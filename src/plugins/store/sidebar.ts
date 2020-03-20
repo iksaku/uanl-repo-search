@@ -10,4 +10,3 @@ export const useSidebar = () => inject('SidebarStore', {
     isSidebarOpen,
     setSidebar
 })
-

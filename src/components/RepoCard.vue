@@ -44,7 +44,7 @@
             <hr class="w-full border">
 
             <div class="flex-shrink-0 w-full flex items-center p-4">
-                <a 
+                <a
                     class="w-1/3 text-center text-sm text-gray-700 whitespace-no-wrap"
                     :href="`${repo.html_url}/search?l=${repo.language}`"
                     target="_blank"
@@ -53,10 +53,10 @@
                     <fa class="inline-block align-middle" icon="code" />
                     <span class="inline-block align-middle ml-1">
                         {{ repo.language }}
-                    </span> 
+                    </span>
                 </a>
 
-                <a 
+                <a
                     class="w-1/3 text-center text-sm text-gray-700"
                     :href="`${repo.html_url}/stargazers`"
                     target="_blank"
@@ -65,17 +65,17 @@
                     <fa class="inline-block align-middle" icon="star" />
                     <span class="inline-block align-middle ml-1">
                         {{ repo.stargazers_count }}
-                    </span> 
+                    </span>
                 </a>
 
-                <a 
+                <a
                     class="w-1/3 text-center text-sm text-gray-700"
                     :href="repo.html_url + (repo.license ? '/master/blob/LICENSE' : '')"
                     target="_blank"
                     rel="noopener"
                 >
                     <fa class="inline-block align-middle mr-1" icon="balance-scale" />
-                    
+
                     <span class="inline-block align-middle">
                         <span v-if="repo.license">
                             {{ repo.license.spdx_id }}
@@ -92,6 +92,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
+import { Repository } from '@/api'
 
 export default defineComponent({
     name: 'RepoCard',
@@ -100,7 +101,7 @@ export default defineComponent({
         repository: Object
     },
 
-    setup(props: { repository: object }) {
+    setup (props: { repository: Repository }) {
         return {
             repo: props.repository
         }

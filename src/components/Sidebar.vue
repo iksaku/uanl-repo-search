@@ -20,7 +20,7 @@
 
                 <div
                     v-show="timeToRateReset > 0"
-                    class="text-center text-sm font-medium text-gray-500 mt-2"
+                    class="text-sm font-medium text-gray-500 pl-4 mt-2"
                 >
                     Resets in {{ timeToRateReset }} {{ timeToRateReset > 1 ? 'seconds' : 'second' }}...
                 </div>
@@ -67,7 +67,7 @@ import { useSidebar } from '@/plugins/store/sidebar'
 export default defineComponent({
     name: 'Sidebar',
 
-    setup() {
+    setup () {
         // Search Functionality
         const { search } = useSearch()
 
@@ -81,7 +81,7 @@ export default defineComponent({
 
         const timeToRateReset = ref<number>(0)
 
-        function updateResetLimit() {
+        function updateResetLimit () {
             if (rateLimit.limit === rateLimit.remaining) {
                 timeToRateReset.value = 0
             } else {
@@ -102,7 +102,7 @@ export default defineComponent({
 
         return {
             ...useSidebar(),
-            
+
             topics,
             selectedTopics,
 

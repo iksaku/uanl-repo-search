@@ -1,9 +1,9 @@
 export interface RepositoryLicense {
-    node_id: string
+    node_id: string;
 
-    key: string
-    name: string
-    spx_id: string
+    key: string;
+    name: string;
+    spx_id: string;
 
-    url: string
+    url: string;
 }
