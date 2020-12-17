@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   lint:
-    name: [CI] Lint Project
+    name: "[CI] Lint Project"
     runs-on: ubuntu-latest
 
     steps:
@@ -35,35 +35,35 @@ jobs:
       - name: 👀 Run linter
         run: yarn lint
   
-    deploy:
-      name: [CD] Build Project
-      runs-on: ubuntu-latest
-      needs: [lint]
+#   build:
+#     name: "[CD] Build Project"
+#     runs-on: ubuntu-latest
+#     needs: [lint]
 
-      steps:
-      - name: 🛎 Checkout
-        uses: actions/checkout@master
+#     steps:
+#     - name: 🛎 Checkout
+#       uses: actions/checkout@master
 
-      - name: 🏗 Setup node env
-        uses: actions/setup-node@v2.1.2
-        with:
-          node-version: 14
+#     - name: 🏗 Setup node env
+#       uses: actions/setup-node@v2.1.2
+#       with:
+#         node-version: 14
 
-      - name: 🗂️ Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+#     - name: 🗂️ Get yarn cache directory path
+#       id: yarn-cache-dir-path
+#       run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - name: 📦 Cache node_modules
-        uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+#     - name: 📦 Cache node_modules
+#       uses: actions/cache@v2
+#       id: yarn-cache
+#       with:
+#         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+#         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+#         restore-keys: |
+#           ${{ runner.os }}-yarn-
 
-      - name: 🚚 Install dependencies
-        run: yarn
+#     - name: 🚚 Install dependencies
+#       run: yarn
 
-      - name: 🏗️ Build Project
-        run: yarn generate
+#     - name: 🏗️ Build Project
+#       run: yarn generate
