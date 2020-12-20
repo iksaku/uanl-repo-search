@@ -32,7 +32,7 @@
   export default {
     head: {
       bodyAttrs: {
-        class: 'min-h-screen bg-gray-200',
+        class: 'min-h-screen bg-blueGray-200',
       },
       link: [
         { rel: 'dns-prefetch', href: 'https://fonts.gstatic.com' },

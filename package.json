@@ -20,7 +20,6 @@
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.0",
-    "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/composition-api": "^0.17.0",
     "@octokit/rest": "^18.0.12",
     "core-js": "^3.6.5",
@@ -29,13 +28,14 @@
     "nuxt": "^2.14.6"
   },
   "devDependencies": {
+    "@iksaku/tailwindcss-plugins": "^2.1.0",
     "@nuxt/types": "^2.14.6",
     "@nuxt/typescript-build": "^2.0.3",
     "@nuxtjs/eslint-config": "^3.1.0",
     "@nuxtjs/eslint-config-typescript": "^3.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/tailwindcss": "^3.1.0",
-    "@tailwindcss/postcss7-compat": "^2.0.2",
+    "@tailwindcss/postcss7-compat": "npm:@tailwindcss/postcss7-compat",
     "autoprefixer": "^9",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.10.0",

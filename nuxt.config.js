@@ -18,7 +18,7 @@ export default {
 
   css: [],
 
-  plugins: [],
+  plugins: ['~/plugins/octokit'],
 
   components: true,
 
@@ -28,5 +28,5 @@ export default {
     '@nuxtjs/tailwindcss',
   ],
 
-  modules: ['@nuxtjs/axios'],
+  modules: [],
 }
