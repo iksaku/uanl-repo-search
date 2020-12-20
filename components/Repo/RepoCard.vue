@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col justify-between bg-white rounded-lg hover:shadow-xl transform ease-out duration-200 hover:-translate-y-1 divide-y overflow-hidden"
+    class="flex flex-col justify-between bg-white rounded-lg hover:shadow-xl divide-y overflow-hidden transform ease-out duration-200 hover:-translate-y-1"
   >
     <!-- Repo Description -->
     <a :href="url" class="relative block p-4 sm:p-6 group" target="_blank">
@@ -74,10 +74,10 @@
 <script>
   import { defineComponent } from '@nuxtjs/composition-api'
 
-  import ExternalLinkIcon from '~/components/icons/ExternalLinkIcon.vue'
-  import CodeIcon from '~/components/icons/CodeIcon'
-  import StarIcon from '~/components/icons/StarIcon'
-  import ScaleIcon from '~/components/icons/ScaleIcon'
+  import ExternalLinkIcon from '@/components/icons/ExternalLinkIcon.vue'
+  import CodeIcon from '@/components/icons/CodeIcon'
+  import StarIcon from '@/components/icons/StarIcon'
+  import ScaleIcon from '@/components/icons/ScaleIcon'
 
   export default defineComponent({
     name: 'RepoCard',

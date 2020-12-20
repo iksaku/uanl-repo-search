@@ -38,9 +38,21 @@
         <dl
           class="sm:grid sm:grid-cols-3 bg-white rounded-lg shadow-lg sm:divide-x divide-y sm:divide-y-0"
         >
-          <stats title="repositorios" :value="stats.repositories" />
-          <stats title="lenguajes" :value="stats.languages" />
-          <stats title="autores" :value="stats.authors" />
+          <stats
+            title="repositorios"
+            :value="stats.repositories"
+            :class="$fetchState.pending ? 'animate-pulse' : ''"
+          />
+          <stats
+            title="lenguajes"
+            :value="stats.languages"
+            :class="$fetchState.pending ? 'animate-pulse' : ''"
+          />
+          <stats
+            title="autores"
+            :value="stats.authors"
+            :class="$fetchState.pending ? 'animate-pulse' : ''"
+          />
         </dl>
       </div>
     </div>
@@ -48,11 +60,16 @@
     <!-- Repositories -->
     <div class="container pt-16 px-4 sm:px-6 lg:px-8 mx-auto">
       <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        <repo-card
-          v-for="repo in results.repositories"
-          :key="repo.id"
-          :repository="repo"
-        />
+        <div v-if="results.repositories.length > 0" class="contents">
+          <repo-card
+            v-for="repo in results.repositories"
+            :key="repo.id"
+            :repository="repo"
+          />
+        </div>
+        <div v-else class="contents">
+          <repo-placeholder v-for="i in 9" :key="i" />
+        </div>
       </div>
     </div>
   </div>
@@ -62,16 +79,16 @@
   import {
     defineComponent,
     useContext,
+    useFetch,
     reactive,
-    useStatic,
-    ref,
   } from '@nuxtjs/composition-api'
 
-  import RepoCard from '~/components/RepoCard.vue'
+  import RepoCard from '@/components/Repo/RepoCard.vue'
+  import RepoPlaceholder from '@/components/Repo/RepoPlaceholder'
   import Stats from '~/components/Stats.vue'
 
   export default defineComponent({
-    components: { RepoCard, Stats },
+    components: { RepoPlaceholder, RepoCard, Stats },
 
     head: {
       link: [
@@ -81,39 +98,35 @@
     },
 
     setup() {
-      const context = useContext()
+      const { $octokit } = useContext()
 
       // Stats
-      const stats = useStatic(
-        () =>
-          new Promise((resolve, reject) => {
-            context.$octokit.search
-              .repos({ q: 'topic:uanl' })
-              .then((response) => {
-                const authors = new Set()
-                const languages = new Set()
+      const stats = reactive({
+        authors: 0,
+        languages: 0,
+        repositories: 0,
+      })
 
-                response.data.items.forEach((repo) => {
-                  authors.add(repo.owner.login)
+      const { fetch } = useFetch(async () => {
+        const response = await $octokit.search.repos({ q: 'topic:uanl ' })
 
-                  if (repo.language) {
-                    languages.add(repo.language)
-                  }
-                })
+        const authors = new Set()
+        const languages = new Set()
 
-                resolve({
-                  authors: authors.size,
-                  languages: languages.size,
-                  repositories: response.data.total_count,
-                })
-              })
-              .catch((error) => {
-                reject(error)
-              })
-          }),
-        ref('stats'),
-        'cache'
-      )
+        response.data.items.forEach((repo) => {
+          authors.add(repo.owner.login)
+
+          if (repo.language) {
+            languages.add(repo.language)
+          }
+        })
+
+        stats.authors = authors.size
+        stats.languages = languages.size
+        stats.repositories = response.data.total_count
+      })
+
+      fetch()
 
       // Repository Search
       const results = reactive({
@@ -127,7 +140,7 @@
 
         results.isLoading = true
 
-        context.$octokit.search
+        $octokit.search
           .repos({
             q: results.searchTopics.map((topic) => `topic:${topic}`).join('+'),
           })

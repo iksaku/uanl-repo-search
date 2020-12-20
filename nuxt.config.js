@@ -5,10 +5,6 @@ export default {
 
   modern: 'client',
 
-  generate: {
-    interval: 20000,
-  },
-
   head: {
     title: 'Repositorios UANL',
     meta: [
