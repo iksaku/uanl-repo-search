@@ -38,12 +38,9 @@
         <dl
           class="sm:grid sm:grid-cols-3 bg-white rounded-lg shadow-lg sm:divide-x divide-y sm:divide-y-0"
         >
-          <stats
-            title="repositorios"
-            :value="$store.state.stats.repositories"
-          />
-          <stats title="lenguajes" :value="$store.state.stats.languages" />
-          <stats title="autores" :value="$store.state.stats.authors" />
+          <stats title="repositorios" :value="stats.repositories" />
+          <stats title="lenguajes" :value="stats.languages" />
+          <stats title="autores" :value="stats.authors" />
         </dl>
       </div>
     </div>
@@ -66,6 +63,8 @@
     defineComponent,
     useContext,
     reactive,
+    useStatic,
+    ref,
   } from '@nuxtjs/composition-api'
 
   import RepoCard from '~/components/RepoCard.vue'
@@ -81,18 +80,47 @@
       ],
     },
 
-    fetch({ store }) {
-      store.dispatch('stats/update')
-    },
-
     setup() {
+      const context = useContext()
+
+      // Stats
+      const stats = useStatic(
+        () =>
+          new Promise((resolve, reject) => {
+            context.$octokit.search
+              .repos({ q: 'topic:uanl' })
+              .then((response) => {
+                const authors = new Set()
+                const languages = new Set()
+
+                response.data.items.forEach((repo) => {
+                  authors.add(repo.owner.login)
+
+                  if (repo.language) {
+                    languages.add(repo.language)
+                  }
+                })
+
+                resolve({
+                  authors: authors.size,
+                  languages: languages.size,
+                  repositories: response.data.total_count,
+                })
+              })
+              .catch((error) => {
+                reject(error)
+              })
+          }),
+        ref('stats'),
+        'cache'
+      )
+
+      // Repository Search
       const results = reactive({
         isLoading: false,
         searchTopics: ['uanl'],
         repositories: [],
       })
-
-      const context = useContext()
 
       function search() {
         if (results.isLoading) return
@@ -117,8 +145,8 @@
       search()
 
       return {
+        stats,
         results,
-        search,
       }
     },
   })

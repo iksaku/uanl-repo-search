@@ -1,5 +1,5 @@
 import { Octokit } from '@octokit/rest'
-import { Plugin } from '@nuxt/types'
+import { defineNuxtPlugin } from "@nuxtjs/composition-api";
 
 declare module '@nuxt/types' {
   interface Context {
@@ -7,14 +7,6 @@ declare module '@nuxt/types' {
   }
 }
 
-declare module 'vuex/types/index' {
-  interface Store<S> {
-    $octokit: Octokit
-  }
-}
-
-const octokitPlugin: Plugin = (_, inject) => {
+export default defineNuxtPlugin((_, inject) => {
   inject('octokit', new Octokit())
-}
-
-export default octokitPlugin
+})

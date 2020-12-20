@@ -3,6 +3,12 @@ export default {
 
   target: 'static',
 
+  modern: 'client',
+
+  generate: {
+    interval: 20000,
+  },
+
   head: {
     title: 'Repositorios UANL',
     meta: [
