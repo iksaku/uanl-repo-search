@@ -31,6 +31,9 @@
 <script>
   export default {
     head: {
+      htmlAttrs: {
+        lang: 'es-419',
+      },
       bodyAttrs: {
         class: 'min-h-screen bg-blueGray-200',
       },
