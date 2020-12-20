@@ -24,6 +24,7 @@
               href="https://github.com/iksaku/uanl-repo-search"
               class="hocus:text-blue-500 border-b border-blue-300 hocus:border-blue-600"
               target="_blank"
+              rel="noopener"
             >
               Contribuye en Github
             </a>

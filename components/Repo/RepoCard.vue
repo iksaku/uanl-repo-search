@@ -3,7 +3,12 @@
     class="flex flex-col justify-between bg-white rounded-lg hover:shadow-xl divide-y overflow-hidden transform ease-out duration-200 hover:-translate-y-1"
   >
     <!-- Repo Description -->
-    <a :href="url" class="relative block p-4 sm:p-6 group" target="_blank">
+    <a
+      :href="url"
+      class="relative block p-4 sm:p-6 group"
+      target="_blank"
+      rel="noopener"
+    >
       <div class="flex flex-col space-y-2">
         <img
           class="w-14 h-14 rounded-full"
@@ -48,6 +53,7 @@
         class="flex items-center justify-center hover:bg-gray-200 hover:text-gray-900 p-4 sm:p-6 space-x-1 group"
         :href="`${url}/stargazers`"
         target="_blank"
+        rel="noopener"
       >
         <star-icon
           class="flex-shrink-0 w-4 sm:w-5 h-4 sm:h-5 group-hover:text-amber-600"

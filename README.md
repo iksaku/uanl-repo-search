@@ -1,4 +1,4 @@
-# uanl-repo-search ![CI](https://github.com/iksaku/uanl-repo-search/workflows/CI/CD/badge.svg?branch=v3)
+# uanl-repo-search ![CI](https://github.com/iksaku/uanl-repo-search/workflows/CI/badge.svg)
 
 ## Build Setup
 
