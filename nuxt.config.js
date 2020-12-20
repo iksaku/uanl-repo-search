@@ -13,7 +13,12 @@ export default {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1',
       },
-      { hid: 'description', name: 'description', content: '' },
+      {
+        hid: 'description',
+        name: 'description',
+        content:
+          'Descubre proyectos creados por alumnos y docentes de la Universidad Autónoma de Nuevo León',
+      },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
