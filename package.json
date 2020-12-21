@@ -1,67 +1,53 @@
 {
   "name": "uanl-repo-search",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "watch": "vue-cli-service build --mode development --watch"
-  },
-  "dependencies": {
-    "@types/qs": "^6.9.1",
-    "core-js": "^3.6.4",
-    "tailwindcss": "^1.2.0",
-    "vue": "^2.6.11"
-  },
-  "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.8.2",
-    "@fortawesome/fontawesome-svg-core": "^1.2.27",
-    "@fortawesome/free-brands-svg-icons": "^5.12.1",
-    "@fortawesome/free-solid-svg-icons": "^5.12.1",
-    "@fortawesome/vue-fontawesome": "^0.1.9",
-    "@fullhuman/postcss-purgecss": "^2.1.0",
-    "@tailwindcss/custom-forms": "^0.2.1",
-    "@typescript-eslint/eslint-plugin": "^2.18.0",
-    "@typescript-eslint/parser": "^2.18.0",
-    "@vue/cli-plugin-babel": "~4.2.0",
-    "@vue/cli-plugin-eslint": "~4.2.0",
-    "@vue/cli-plugin-typescript": "~4.2.0",
-    "@vue/cli-service": "~4.2.0",
-    "@vue/composition-api": "^0.5",
-    "@vue/eslint-config-standard": "^5.1.0",
-    "@vue/eslint-config-typescript": "^5.0.1",
-    "autoprefixer": "^9.7.4",
-    "axios": "^0.18.0",
-    "babel-eslint": "^10.0.1",
-    "dayjs": "^1.8.23",
-    "eslint": "^6.7.2",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.0",
-    "eslint-plugin-vue": "^6.1.2",
-    "lint-staged": "^9.5.0",
-    "purgecss": "^2.1.0",
-    "qs": "^6.9.1",
-    "typescript": "~3.7.5",
-    "vue-template-compiler": "^2.6.11",
-    "webpack": "^4.32.2"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
-  "_id": "uanl-repo-search@0.1.0",
-  "gitHooks": {
-    "pre-commit": "lint-staged"
+    "dev": "nuxt-ts",
+    "build": "nuxt-ts build",
+    "start": "nuxt-ts start",
+    "generate": "nuxt-ts generate",
+    "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lint": "yarn lint:js"
   },
   "lint-staged": {
-    "*.{js,jsx,vue,ts,tsx}": [
-      "vue-cli-service lint",
-      "git add"
-    ]
+    "*.{js,vue}": "eslint"
   },
-  "readme": "ERROR: No README data found!"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "dependencies": {
+    "@nuxt/typescript-runtime": "^2.0.0",
+    "@nuxtjs/composition-api": "^0.17.0",
+    "@octokit/rest": "^18.0.12",
+    "core-js": "^3.6.5",
+    "dayjs": "^1.9.7",
+    "lokijs": "^1.5.11",
+    "millify": "^3.3.0",
+    "nuxt": "^2.14.6"
+  },
+  "devDependencies": {
+    "@iksaku/tailwindcss-plugins": "^2.1.0",
+    "@nuxt/types": "^2.14.6",
+    "@nuxt/typescript-build": "^2.0.3",
+    "@nuxtjs/eslint-config": "^3.1.0",
+    "@nuxtjs/eslint-config-typescript": "^3.0.0",
+    "@nuxtjs/eslint-module": "^2.0.0",
+    "@nuxtjs/tailwindcss": "^3.1.0",
+    "@tailwindcss/forms": "^0.2.1",
+    "@tailwindcss/postcss7-compat": "npm:@tailwindcss/postcss7-compat",
+    "autoprefixer": "^9",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.10.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-plugin-nuxt": "^1.0.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.0",
+    "postcss": "^7",
+    "prettier": "^2.1.2",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat"
+  }
 }

@@ -1,27 +1,32 @@
-const plugin = require('tailwindcss/plugin')
-const defaultConfig = require('tailwindcss/defaultConfig')
+const theme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
-    theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Inter', ...defaultConfig.theme.fontFamily.sans]
-            }
-        }
+  purge: [],
+  darkMode: false, // or 'media' or 'class'
+  theme: {
+    colors: {
+      transparent: 'transparent',
+      white: colors.white,
+      blueGray: colors.blueGray,
+      gray: colors.coolGray,
+      amber: colors.amber,
+      blue: colors.blue,
     },
-    variants: {
-        cursor: [...defaultConfig.variants.cursor, 'disabled'],
-        opacity: [...defaultConfig.variants.opacity, 'disabled']
+    extend: {
+      fontFamily: {
+        sans: ['DM Sans', ...theme.fontFamily.sans],
+      },
     },
-    plugins: [
-        require('@tailwindcss/custom-forms'),
-
-        plugin(function ({ addVariant, e }) {
-            addVariant('hocus', ({ modifySelectors, separator }) => {
-                modifySelectors(({ className }) => {
-                    return `.${e(`hocus${separator}${className}`)}:hover,.${e(`hocus${separator}${className}`)}:focus`
-                })
-            })
-        })
-    ]
+  },
+  variants: {
+    extend: {
+      boxShadow: ['hocus'],
+    },
+  },
+  plugins: [
+    require('@iksaku/tailwindcss-plugins/src/hocus'),
+    require('@iksaku/tailwindcss-plugins/src/smoothScroll'),
+    require('@tailwindcss/forms'),
+  ],
 }
