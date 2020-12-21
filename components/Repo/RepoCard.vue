@@ -15,7 +15,7 @@
           :src="image"
           alt="Author's Avatar"
         />
-        <h2 class="text-gray-900 text-xl">
+        <h2 class="text-gray-900 text-xl overflow-hidden overflow-ellipsis">
           {{ name }}
         </h2>
         <p
