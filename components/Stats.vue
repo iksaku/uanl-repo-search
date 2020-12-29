@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-  import millify from 'millify'
+  import { millify } from 'millify'
 
   export default {
     name: 'Stats',
