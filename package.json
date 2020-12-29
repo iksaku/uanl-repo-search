@@ -23,7 +23,7 @@
     "@nuxtjs/composition-api": "^0.17.0",
     "@octokit/rest": "^18.0.12",
     "core-js": "^3.6.5",
-    "dayjs": "^1.9.7",
+    "dayjs": "^1.9.8",
     "lokijs": "^1.5.11",
     "millify": "^3.3.0",
     "nuxt": "^2.14.6"
