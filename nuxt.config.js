@@ -26,8 +26,8 @@ export default {
         src: 'https://hey.jorgeglz.io/js/index.js',
         'data-domain': 'uanl-repos.jorgeglz.io',
         async: true,
-        defer: true
-      }
+        defer: true,
+      },
     ],
   },
 
