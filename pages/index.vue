@@ -35,59 +35,14 @@
 
     <!-- Stats -->
     <div class="max-w-screen-xl px-4 sm:px-6 lg:px-8 mx-auto -mt-16">
-      <div class="max-w-4xl mx-auto">
-        <dl
-          class="sm:grid sm:grid-cols-3 bg-white rounded-lg shadow-lg sm:divide-x divide-y sm:divide-y-0"
-        >
-          <stats
-            title="repositorios"
-            :value="stats.repositories"
-            :class="{
-              'animate-pulse': $fetchState.pending || rateLimit.retry.stats,
-            }"
-          />
-          <stats
-            title="lenguajes"
-            :value="stats.languages"
-            :class="{
-              'animate-pulse': $fetchState.pending || rateLimit.retry.stats,
-            }"
-          />
-          <stats
-            title="autores"
-            :value="stats.authors"
-            :class="{
-              'animate-pulse': $fetchState.pending || rateLimit.retry.stats,
-            }"
-          />
-        </dl>
-      </div>
+      <stats />
     </div>
 
     <!-- Repositories -->
     <div class="pt-8 sm:pt-16 px-4 sm:px-6 lg:px-8 space-y-8">
       <div
-        class="flex flex-col sm:flex-row items-center justify-center sm:justify-between text-blue-900 space-y-4 sm:space-y-0"
+        class="flex flex-col sm:flex-row items-center justify-center sm:justify-end text-blue-900 space-y-4 sm:space-y-0"
       >
-        <!-- Rate Limit -->
-        <div
-          class="flex flex-col sm:flex-row items-center sm:items-baseline sm:space-x-1 space-y-1 sm:space-y-0"
-        >
-          <span>{{ rateLimit.remaining }} requests available</span>
-          <span
-            v-if="rateLimit.reset > 0"
-            class="text-blueGray-700 text-sm italic"
-          >
-            (Resets in {{ rateLimit.countdown }} seconds...)
-          </span>
-          <span
-            v-else-if="rateLimit.retry.stats || rateLimit.retry.search"
-            class="text-blueGray-700 text-sm italic"
-          >
-            (Retrying...)
-          </span>
-        </div>
-
         <!-- Sort + Order -->
         <div class="flex items-center space-x-2">
           <label class="flex items-baseline space-x-1">
@@ -110,47 +65,38 @@
           </button>
         </div>
       </div>
+
+      <!-- Repository Listing -->
       <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        <div v-if="repos.list.length > 0" class="contents">
-          <repo-card
-            v-for="repo in repos.list"
-            :key="repo.id"
-            :repository="repo"
-          />
-        </div>
-        <div v-else class="contents">
-          <repo-placeholder v-for="i in 9" :key="i" />
-        </div>
+        <repo-card
+          v-for="repo in repos.list.values()"
+          v-show="repos.list.size > 0"
+          :key="repo.id"
+          :repository="repo"
+        />
+
+        <repo-placeholder
+          v-for="i in 9"
+          v-show="searchState.pending"
+          :key="i"
+        />
       </div>
+
+      <intersection-observer
+        v-if="repos.pagination.current < repos.pagination.total"
+        @intersect="loadMore"
+      />
     </div>
   </div>
 </template>
 
-<script>
-  import {
-    defineComponent,
-    useContext,
-    useFetch,
-    reactive,
-    watch,
-  } from '@nuxtjs/composition-api'
-  import dayjs from 'dayjs'
+<script lang="ts">
+  import { defineComponent, useFetch } from '@nuxtjs/composition-api'
 
-  import RepoCard from '@/components/Repo/RepoCard.vue'
-  import RepoPlaceholder from '@/components/Repo/RepoPlaceholder'
-  import SortAscendingIcon from '@/components/icons/SortAscendingIcon'
-  import SortDescendingIcon from '@/components/icons/SortDescendingIcon'
-  import Stats from '~/components/Stats.vue'
+  import { useRateLimit } from '~/hooks/rateLimit'
+  import { useRepos } from '~/hooks/repos'
 
   export default defineComponent({
-    components: {
-      SortDescendingIcon,
-      SortAscendingIcon,
-      RepoPlaceholder,
-      RepoCard,
-      Stats,
-    },
-
     head: {
       link: [
         { rel: 'dns-prefetch', href: 'https://api.github.com' },
@@ -158,177 +104,27 @@
       ],
     },
 
+    fetchOnServer: false,
+
     setup() {
-      const { $octokit } = useContext()
+      const { rateLimit } = useRateLimit()
+      const { repos, search: _search } = useRepos()
 
-      // Rate Limit
-      const rateLimit = reactive({
-        limit: 10,
-        remaining: 10,
-        reset: 0,
-        countdown: 0,
-        retry: {
-          stats: false,
-          search: false,
-        },
-      })
+      const { fetch: search, fetchState: searchState } = useFetch(_search)
 
-      function rateLimitTimer() {
-        if (rateLimit.limit === rateLimit.remaining) {
-          rateLimit.reset = 0
-          return
-        }
+      function loadMore() {
+        if (repos.pagination.current >= repos.pagination.total) return
 
-        const timeDiff = Math.ceil(
-          dayjs.unix(rateLimit.reset).diff(dayjs(), 'second', true)
-        )
+        ++repos.pagination.current
 
-        rateLimit.countdown = Math.max(0, timeDiff)
-
-        if (timeDiff > 0) {
-          setTimeout(rateLimitTimer, 500)
-          return
-        }
-
-        rateLimit.remaining = rateLimit.limit
-        rateLimit.reset = 0
-
-        if (rateLimit.retry.stats) {
-          setTimeout(fetch, 1000)
-        }
-
-        if (rateLimit.retry.search) {
-          setTimeout(search, 1000)
-        }
+        search()
       }
-
-      function updateRateLimitFromRequest(response) {
-        rateLimit.limit = response.headers['x-ratelimit-limit']
-
-        rateLimit.remaining = Math.min(
-          rateLimit.remaining,
-          response.headers['x-ratelimit-remaining']
-        )
-
-        rateLimit.reset = Math.max(
-          rateLimit.reset,
-          response.headers['x-ratelimit-reset']
-        )
-      }
-
-      watch(() => rateLimit.reset, rateLimitTimer)
-
-      // Stats
-      const stats = reactive({
-        authors: 0,
-        languages: 0,
-        repositories: 0,
-      })
-
-      const { fetch } = useFetch(
-        () =>
-          new Promise((resolve, reject) => {
-            $octokit.search
-              .repos({ q: 'topic:uanl' })
-              .then((response) => {
-                updateRateLimitFromRequest(response)
-
-                const authors = new Set()
-                const languages = new Set()
-
-                response.data.items.forEach((repo) => {
-                  authors.add(repo.owner.login)
-
-                  if (repo.language) {
-                    languages.add(repo.language)
-                  }
-                })
-
-                stats.authors = authors.size
-                stats.languages = languages.size
-                stats.repositories = response.data.total_count
-
-                if (rateLimit.retry.stats) {
-                  rateLimit.retry.stats = false
-                }
-
-                resolve()
-              })
-              .catch((error) => {
-                updateRateLimitFromRequest(error)
-                if (error.status === 403) {
-                  rateLimit.retry.stats = true
-
-                  resolve()
-                  return
-                }
-
-                reject(error)
-              })
-          })
-      )
-
-      fetch()
-
-      // Repository Search
-      const repos = reactive({
-        isLoading: false,
-        topics: ['uanl'],
-        sortBy: 'stars',
-        orderAscending: false,
-        list: [],
-      })
-
-      function search() {
-        if (repos.isLoading) return
-
-        const payload = {
-          q: repos.topics.map((topic) => `topic:${topic}`).join('+'),
-        }
-
-        if (repos.sortBy) {
-          if (
-            !['stars', 'forks', 'updated', 'help-wanted-issues'].includes(
-              repos.sortBy
-            )
-          )
-            return
-
-          payload.sort = repos.sortBy
-          payload.order = repos.orderAscending ? 'asc' : 'desc'
-        }
-
-        repos.isLoading = true
-
-        $octokit.search
-          .repos(payload)
-          .then((response) => {
-            updateRateLimitFromRequest(response)
-            repos.list = response.data.items
-
-            if (rateLimit.retry.search) {
-              rateLimit.retry.search = false
-            }
-          })
-          .catch((error) => {
-            updateRateLimitFromRequest(error)
-            if (error.status === 403) {
-              rateLimit.retry.search = true
-            }
-          })
-          .finally(() => {
-            repos.isLoading = false
-          })
-      }
-
-      search()
-
-      watch(() => [repos.topics, repos.sortBy, repos.orderAscending], search)
 
       return {
         rateLimit,
-        stats,
         repos,
+        searchState,
+        loadMore,
       }
     },
   })

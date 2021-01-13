@@ -11,7 +11,7 @@
     "lint": "yarn lint:js"
   },
   "lint-staged": {
-    "*.{js,vue}": "eslint"
+    "*.{ts,js,vue}": "eslint"
   },
   "husky": {
     "hooks": {
@@ -20,16 +20,16 @@
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.0",
-    "@nuxtjs/composition-api": "^0.17.0",
+    "@nuxtjs/composition-api": "^0.18.0",
+    "@octokit/plugin-throttling": "^3.3.4",
     "@octokit/rest": "^18.0.12",
     "core-js": "^3.6.5",
-    "dayjs": "^1.9.7",
-    "lokijs": "^1.5.11",
     "millify": "^3.3.0",
     "nuxt": "^2.14.6"
   },
   "devDependencies": {
     "@iksaku/tailwindcss-plugins": "^2.1.0",
+    "@nuxt/http": "^0.6.2",
     "@nuxt/types": "^2.14.6",
     "@nuxt/typescript-build": "^2.0.3",
     "@nuxtjs/eslint-config": "^3.1.0",

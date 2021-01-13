@@ -32,14 +32,3 @@
     </div>
   </div>
 </template>
-
-<script>
-  import CodeIcon from '@/components/icons/CodeIcon'
-  import StarIcon from '@/components/icons/StarIcon'
-  import ScaleIcon from '@/components/icons/ScaleIcon'
-
-  export default {
-    name: 'RepoPlaceholder',
-    components: { ScaleIcon, StarIcon, CodeIcon },
-  }
-</script>

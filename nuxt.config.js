@@ -1,9 +1,7 @@
 export default {
-  ssr: false,
+  ssr: true,
 
   target: 'static',
-
-  modern: 'client',
 
   head: {
     title: 'Repositorios UANL',
@@ -25,7 +23,7 @@ export default {
 
   css: [],
 
-  plugins: ['~/plugins/octokit'],
+  plugins: [],
 
   components: true,
 
@@ -35,5 +33,5 @@ export default {
     '@nuxtjs/tailwindcss',
   ],
 
-  modules: [],
+  modules: ['@nuxt/http'],
 }

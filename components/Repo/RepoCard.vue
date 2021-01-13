@@ -4,7 +4,7 @@
   >
     <!-- Repo Description -->
     <a
-      :href="url"
+      :href="repository.url"
       class="relative block p-4 sm:p-6 group"
       target="_blank"
       rel="noopener"
@@ -12,16 +12,16 @@
       <div class="flex flex-col space-y-2">
         <img
           class="w-14 h-14 rounded-full"
-          :src="image"
+          :src="repository.owner.avatar_url"
           alt="Author's Avatar"
         />
         <h2 class="text-gray-900 text-xl overflow-hidden overflow-ellipsis">
-          {{ name }}
+          {{ repository.name }}
         </h2>
         <p
           class="text-gray-500 group-hover:text-gray-900 transition-colors ease-out duration-200"
         >
-          {{ description }}
+          {{ repository.description }}
         </p>
       </div>
 
@@ -44,14 +44,14 @@
           class="flex-shrink-0 w-4 sm:w-5 h-4 sm:h-5 group-hover:text-blue-500"
         />
 
-        <span v-if="language">{{ language }}</span>
+        <span v-if="repository.language">{{ repository.language }}</span>
         <span v-else class="italic">N/A</span>
       </div>
 
       <!-- Stars -->
       <a
         class="flex items-center justify-center hover:bg-gray-200 hover:text-gray-900 p-4 sm:p-6 space-x-1 group"
-        :href="`${url}/stargazers`"
+        :href="`${repository.url}/stargazers`"
         target="_blank"
         rel="noopener"
       >
@@ -59,7 +59,7 @@
           class="flex-shrink-0 w-4 sm:w-5 h-4 sm:h-5 group-hover:text-amber-600"
         />
 
-        <span>{{ stars }}</span>
+        <span>{{ repository.stargazers_count }}</span>
       </a>
 
       <!-- License -->
@@ -68,8 +68,8 @@
       >
         <scale-icon class="flex-shrink-0 w-4 sm:w-5 h-4 sm:h-5" />
 
-        <span v-if="license">
-          {{ license }}
+        <span v-if="repository.license">
+          {{ repository.license.spdx_id }}
         </span>
         <span v-else class="group-hover:text-gray-500 italic">N/A</span>
       </div>
@@ -77,34 +77,18 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import { defineComponent } from '@nuxtjs/composition-api'
-
-  import ExternalLinkIcon from '@/components/icons/ExternalLinkIcon.vue'
-  import CodeIcon from '@/components/icons/CodeIcon'
-  import StarIcon from '@/components/icons/StarIcon'
-  import ScaleIcon from '@/components/icons/ScaleIcon'
+  import { Repository } from '~/hooks/octokit'
 
   export default defineComponent({
     name: 'RepoCard',
-    components: { ExternalLinkIcon, ScaleIcon, StarIcon, CodeIcon },
+
     props: {
       repository: {
-        type: Object,
+        type: Object as () => Repository,
         required: true,
       },
-    },
-
-    setup({ repository }) {
-      return {
-        url: repository.html_url,
-        name: repository.name,
-        description: repository.description,
-        image: repository.owner.avatar_url,
-        language: repository.language,
-        stars: repository.stargazers_count,
-        license: repository.license?.spdx_id,
-      }
     },
   })
 </script>
