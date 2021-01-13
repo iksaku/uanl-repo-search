@@ -72,22 +72,20 @@
       </div>
 
       <!-- Repository Listing -->
-      <lazy-hydrate when-visible>
-        <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          <repo-card
-            v-for="repo in repos.list.values()"
-            v-show="repos.list.size > 0"
-            :key="repo.id"
-            :repository="repo"
-          />
+      <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+        <repo-card
+          v-for="repo in repos.list.values()"
+          v-show="repos.list.size > 0"
+          :key="repo.id"
+          :repository="repo"
+        />
 
-          <repo-placeholder
-            v-for="i in 9"
-            v-show="searchState.pending"
-            :key="i"
-          />
-        </div>
-      </lazy-hydrate>
+        <repo-placeholder
+          v-for="i in 9"
+          v-show="searchState.pending"
+          :key="i"
+        />
+      </div>
 
       <intersection-observer
         v-if="repos.pagination.current < repos.pagination.total"
@@ -100,16 +98,10 @@
 <script lang="ts">
   import { defineComponent, useFetch } from '@nuxtjs/composition-api'
 
-  import LazyHydrate from 'vue-lazy-hydration/src/LazyHydrate'
-
   import { useRateLimit } from '~/hooks/rateLimit'
   import { useRepos } from '~/hooks/repos'
 
   export default defineComponent({
-    components: {
-      LazyHydrate,
-    },
-
     setup() {
       const { rateLimit } = useRateLimit()
       const { repos, search: _search } = useRepos()
