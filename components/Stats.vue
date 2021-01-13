@@ -6,7 +6,7 @@
       <!-- Repositories -->
       <div
         class="flex sm:flex-col items-center justify-center text-center p-4 sm:p-6 space-x-2 sm:space-x-0 sm:space-y-2"
-        :class="{ 'animate-pulse': loading }"
+        :class="{ 'animate-pulse': fetchState.pending }"
       >
         <dd class="text-blue-700 text-2xl sm:text-4xl font-extrabold">
           {{ repositories }}
@@ -17,7 +17,7 @@
       <!-- Languages -->
       <div
         class="flex sm:flex-col items-center justify-center text-center p-4 sm:p-6 space-x-2 sm:space-x-0 sm:space-y-2"
-        :class="{ 'animate-pulse': loading }"
+        :class="{ 'animate-pulse': fetchState.pending }"
       >
         <dd class="text-blue-700 text-2xl sm:text-4xl font-extrabold">
           {{ languages }}
@@ -28,7 +28,7 @@
       <!-- Authors -->
       <div
         class="flex sm:flex-col items-center justify-center text-center p-4 sm:p-6 space-x-2 sm:space-x-0 sm:space-y-2"
-        :class="{ 'animate-pulse': loading }"
+        :class="{ 'animate-pulse': fetchState.pending }"
       >
         <dd class="text-blue-700 text-2xl sm:text-4xl font-extrabold">
           {{ authors }}
@@ -45,7 +45,6 @@
     computed,
     defineComponent,
     reactive,
-    ref,
     useContext,
     useFetch,
   } from '@nuxtjs/composition-api'
@@ -58,6 +57,8 @@
 
   export default defineComponent({
     name: 'Stats',
+
+    fetchOnServer: false,
 
     setup() {
       const { $http } = useContext()
@@ -72,30 +73,20 @@
         repositories: 0,
       })
 
-      const loading = ref<boolean>(false)
+      const { fetchState } = useFetch(async () => {
+        const response = await $http.$get<Stats>('/api/stats')
 
-      if (process.client) {
-        useFetch(async () => {
-          if (loading.value) return
-
-          loading.value = true
-
-          const response = await $http.$get<Stats>('/api/stats')
-
-          stats.authors = response.authors
-          stats.languages = response.languages
-          stats.repositories = response.repositories
-
-          loading.value = false
-        })
-      }
+        stats.authors = response.authors
+        stats.languages = response.languages
+        stats.repositories = response.repositories
+      })
 
       const authors = computed(() => numberFormat(stats.authors))
       const languages = computed(() => numberFormat(stats.languages))
       const repositories = computed(() => numberFormat(stats.repositories))
 
       return {
-        loading,
+        fetchState,
         authors,
         languages,
         repositories,

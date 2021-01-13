@@ -59,7 +59,12 @@
             </select>
           </label>
 
-          <button @click="repos.orderAscending = !repos.orderAscending">
+          <button
+            :title="`Ordenar de manera ${
+              repos.orderAscending ? 'descendente' : 'ascendente'
+            }`"
+            @click="repos.orderAscending = !repos.orderAscending"
+          >
             <sort-ascending-icon v-if="repos.orderAscending" class="w-6 h-6" />
             <sort-descending-icon v-else class="w-6 h-6" />
           </button>
@@ -67,20 +72,22 @@
       </div>
 
       <!-- Repository Listing -->
-      <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        <repo-card
-          v-for="repo in repos.list.values()"
-          v-show="repos.list.size > 0"
-          :key="repo.id"
-          :repository="repo"
-        />
+      <lazy-hydrate when-visible>
+        <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+          <repo-card
+            v-for="repo in repos.list.values()"
+            v-show="repos.list.size > 0"
+            :key="repo.id"
+            :repository="repo"
+          />
 
-        <repo-placeholder
-          v-for="i in 9"
-          v-show="searchState.pending"
-          :key="i"
-        />
-      </div>
+          <repo-placeholder
+            v-for="i in 9"
+            v-show="searchState.pending"
+            :key="i"
+          />
+        </div>
+      </lazy-hydrate>
 
       <intersection-observer
         v-if="repos.pagination.current < repos.pagination.total"
@@ -93,18 +100,15 @@
 <script lang="ts">
   import { defineComponent, useFetch } from '@nuxtjs/composition-api'
 
+  import LazyHydrate from 'vue-lazy-hydration/src/LazyHydrate'
+
   import { useRateLimit } from '~/hooks/rateLimit'
   import { useRepos } from '~/hooks/repos'
 
   export default defineComponent({
-    head: {
-      link: [
-        { rel: 'dns-prefetch', href: 'https://api.github.com' },
-        { rel: 'preconnect', href: 'https://api.github.com' },
-      ],
+    components: {
+      LazyHydrate,
     },
-
-    fetchOnServer: false,
 
     setup() {
       const { rateLimit } = useRateLimit()
@@ -127,5 +131,14 @@
         loadMore,
       }
     },
+
+    head: {
+      link: [
+        { rel: 'dns-prefetch', href: 'https://api.github.com' },
+        { rel: 'preconnect', href: 'https://api.github.com' },
+      ],
+    },
+
+    fetchOnServer: false,
   })
 </script>

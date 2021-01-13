@@ -1,6 +1,23 @@
 <template>
-  <Nuxt />
+  <nuxt />
 </template>
+
+<script>
+  export default {
+    head: {
+      htmlAttrs: {
+        lang: 'es-419',
+      },
+      bodyAttrs: {
+        class: 'min-h-screen bg-blueGray-200',
+      },
+      link: [
+        { rel: 'dns-prefetch', href: 'https://fonts.gstatic.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
+      ],
+    },
+  }
+</script>
 
 <style>
   @font-face {
@@ -27,20 +44,3 @@
       U+2215, U+FEFF, U+FFFD;
   }
 </style>
-
-<script>
-  export default {
-    head: {
-      htmlAttrs: {
-        lang: 'es-419',
-      },
-      bodyAttrs: {
-        class: 'min-h-screen bg-blueGray-200',
-      },
-      link: [
-        { rel: 'dns-prefetch', href: 'https://fonts.gstatic.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
-      ],
-    },
-  }
-</script>
