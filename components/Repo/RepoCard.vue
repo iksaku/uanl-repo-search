@@ -4,7 +4,7 @@
   >
     <!-- Repo Description -->
     <a
-      :href="repository.url"
+      :href="repository.html_url"
       class="relative block p-4 sm:p-6 group"
       target="_blank"
       rel="noopener"
@@ -19,7 +19,7 @@
           {{ repository.name }}
         </h2>
         <p
-          class="text-gray-500 group-hover:text-gray-900 transition-colors ease-out duration-200"
+          class="text-gray-700 group-hover:text-gray-900 line-clamp-3 transition-colors ease-out duration-200"
         >
           {{ repository.description }}
         </p>

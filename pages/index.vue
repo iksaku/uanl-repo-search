@@ -103,15 +103,15 @@
 <script lang="ts">
   import { defineComponent, useFetch } from '@nuxtjs/composition-api'
 
-  import { useRateLimit } from '~/hooks/rateLimit'
-  import { useRepos } from '~/hooks/repos'
+  import { filters } from '~/hooks/filters'
+  import { rateLimit } from '~/hooks/rateLimit'
+  import { repos, search as _repoSearch } from '~/hooks/repos'
 
   export default defineComponent({
-    setup() {
-      const { rateLimit } = useRateLimit()
-      const { repos, filters, search: _search } = useRepos()
+    name: 'Index',
 
-      const { fetch: search, fetchState: searchState } = useFetch(_search)
+    setup() {
+      const { fetch: search, fetchState: searchState } = useFetch(_repoSearch)
 
       function loadMore() {
         if (repos.pagination.current >= repos.pagination.total) return
@@ -125,6 +125,7 @@
         rateLimit,
         repos,
         filters,
+        search,
         searchState,
         loadMore,
       }

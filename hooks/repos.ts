@@ -1,5 +1,7 @@
-import { inject, reactive } from '@nuxtjs/composition-api'
+import { reactive } from '@nuxtjs/composition-api'
 import { octokit, per_page, Repository } from '~/hooks/octokit'
+
+import { filters } from '~/hooks/filters'
 
 type RepoStore = {
   pagination: {
@@ -9,7 +11,7 @@ type RepoStore = {
   list: Map<Repository['id'], Repository>
 }
 
-const repos = reactive<RepoStore>({
+export const repos = reactive<RepoStore>({
   pagination: {
     total: 1,
     current: 1,
@@ -17,19 +19,7 @@ const repos = reactive<RepoStore>({
   list: new Map(),
 })
 
-type SearchFilters = {
-  q: string
-  sortBy: 'stars' | 'forks' | 'updated' | 'help-wanted-issues'
-  orderAscending: boolean
-}
-
-const filters = reactive<SearchFilters>({
-  q: '',
-  sortBy: 'stars',
-  orderAscending: false,
-})
-
-async function search(): Promise<void> {
+export async function search(): Promise<void> {
   if (repos.pagination.current > repos.pagination.total) return
 
   const response = await octokit.search.repos({
@@ -46,10 +36,3 @@ async function search(): Promise<void> {
     repos.list.set(repo.id, repo)
   })
 }
-
-export const useRepos = () =>
-  inject('RepoStore', {
-    repos,
-    filters,
-    search,
-  })

@@ -1,4 +1,4 @@
-import { inject, reactive } from '@nuxtjs/composition-api'
+import { reactive } from '@nuxtjs/composition-api'
 
 type RateLimit = {
   abused: boolean
@@ -11,8 +11,3 @@ export const rateLimit = reactive<RateLimit>({
   limited: false,
   retryAfter: 0,
 })
-
-export const useRateLimit = () =>
-  inject('RateLimit', {
-    rateLimit,
-  })

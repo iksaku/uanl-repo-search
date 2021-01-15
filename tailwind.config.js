@@ -28,5 +28,6 @@ module.exports = {
     require('@iksaku/tailwindcss-plugins/src/hocus'),
     require('@iksaku/tailwindcss-plugins/src/smoothScroll'),
     require('@tailwindcss/forms'),
+    require('@tailwindcss/line-clamp'),
   ],
 }

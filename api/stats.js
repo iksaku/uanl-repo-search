@@ -38,10 +38,10 @@ export default async (_request, response) => {
     ++pagination.current
   } while (pagination.current <= pagination.total)
 
-  // Cache network response for 1 day
   response.setHeader(
     'Cache-Control',
-    'max-age=0, s-maxage=86400, stale-while-revalidate'
+    // Cache response on client for 5 minutes and on network for 1 day
+    'max-age=300, s-maxage=86400, stale-while-revalidate'
   )
   response.status(200).json({
     authors: authors.size,
