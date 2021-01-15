@@ -6,9 +6,7 @@ type RepoStore = {
     total: number
     current: number
   }
-  sortBy: 'stars' | 'forks' | 'updated' | 'help-wanted-issues'
-  orderAscending: boolean
-  list: Set<Repository>
+  list: Map<Repository['id'], Repository>
 }
 
 const repos = reactive<RepoStore>({
@@ -16,18 +14,28 @@ const repos = reactive<RepoStore>({
     total: 1,
     current: 1,
   },
-  sortBy: 'stars',
-  orderAscending: false,
-  list: new Set(),
+  list: new Map(),
 })
 
-async function search() {
+type SearchFilters = {
+  q: string
+  sortBy: 'stars' | 'forks' | 'updated' | 'help-wanted-issues'
+  orderAscending: boolean
+}
+
+const filters = reactive<SearchFilters>({
+  q: '',
+  sortBy: 'stars',
+  orderAscending: false,
+})
+
+async function search(): Promise<void> {
   if (repos.pagination.current > repos.pagination.total) return
 
   const response = await octokit.search.repos({
     q: 'topic:uanl',
-    sort: repos.sortBy,
-    order: repos.orderAscending ? 'asc' : 'desc',
+    sort: filters.sortBy,
+    order: filters.orderAscending ? 'asc' : 'desc',
     page: repos.pagination.current,
     per_page,
   })
@@ -35,12 +43,13 @@ async function search() {
   repos.pagination.total = Math.ceil(response.data.total_count / per_page)
 
   response.data.items.forEach((repo) => {
-    repos.list.add(repo)
+    repos.list.set(repo.id, repo)
   })
 }
 
 export const useRepos = () =>
   inject('RepoStore', {
     repos,
+    filters,
     search,
   })

@@ -49,7 +49,7 @@
             <span>Sort by</span>
 
             <select
-              v-model="repos.sortBy"
+              v-model="filters.sortBy"
               class="border-none bg-transparent rounded-lg"
             >
               <option value="stars">Stars</option>
@@ -61,11 +61,14 @@
 
           <button
             :title="`Ordenar de manera ${
-              repos.orderAscending ? 'descendente' : 'ascendente'
+              filters.orderAscending ? 'descendente' : 'ascendente'
             }`"
-            @click="repos.orderAscending = !repos.orderAscending"
+            @click="filters.orderAscending = !filters.orderAscending"
           >
-            <sort-ascending-icon v-if="repos.orderAscending" class="w-6 h-6" />
+            <sort-ascending-icon
+              v-if="filters.orderAscending"
+              class="w-6 h-6"
+            />
             <sort-descending-icon v-else class="w-6 h-6" />
           </button>
         </div>
@@ -75,7 +78,6 @@
       <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
         <repo-card
           v-for="repo in repos.list.values()"
-          v-show="repos.list.size > 0"
           :key="repo.id"
           :repository="repo"
         />
@@ -88,7 +90,10 @@
       </div>
 
       <intersection-observer
-        v-if="repos.pagination.current < repos.pagination.total"
+        v-if="
+          !searchState.pending &&
+          repos.pagination.current < repos.pagination.total
+        "
         @intersect="loadMore"
       />
     </div>
@@ -104,7 +109,7 @@
   export default defineComponent({
     setup() {
       const { rateLimit } = useRateLimit()
-      const { repos, search: _search } = useRepos()
+      const { repos, filters, search: _search } = useRepos()
 
       const { fetch: search, fetchState: searchState } = useFetch(_search)
 
@@ -119,6 +124,7 @@
       return {
         rateLimit,
         repos,
+        filters,
         searchState,
         loadMore,
       }
