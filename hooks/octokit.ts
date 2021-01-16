@@ -1,6 +1,7 @@
-import { GetResponseDataTypeFromEndpointMethod } from '@octokit/types'
 import { Octokit } from '@octokit/rest'
 import { throttling } from '@octokit/plugin-throttling'
+import { GetResponseDataTypeFromEndpointMethod } from '@octokit/types'
+import { RestEndpointMethodTypes } from '@octokit/plugin-rest-endpoint-methods/dist-types/generated/parameters-and-response-types'
 
 import { reactive } from '@nuxtjs/composition-api'
 
@@ -32,3 +33,5 @@ export const octokit = new UserOctokit({
 export type Repository = GetResponseDataTypeFromEndpointMethod<
   typeof octokit.search.repos
 >['items'][number]
+
+export type RepositorySearchParameters = RestEndpointMethodTypes['search']['repos']['parameters']

@@ -34,47 +34,12 @@
     </div>
 
     <!-- Stats -->
-    <div class="max-w-screen-xl px-4 sm:px-6 lg:px-8 mx-auto -mt-16">
-      <stats />
-    </div>
+    <stats />
 
     <!-- Repositories -->
     <div class="pt-8 sm:pt-16 px-4 sm:px-6 lg:px-8 space-y-8">
-      <div
-        class="flex flex-col sm:flex-row items-center justify-center sm:justify-end text-blue-900 space-y-4 sm:space-y-0"
-      >
-        <!-- Sort + Order -->
-        <div class="flex items-center space-x-2">
-          <label class="flex items-baseline space-x-1">
-            <span>Sort by</span>
-
-            <select
-              v-model="searchFilters.sortBy"
-              class="border-none bg-transparent rounded-lg"
-            >
-              <option value="stars">Stars</option>
-              <option value="forks">Forks</option>
-              <option value="updated">Update Time</option>
-              <option value="help-wanted-issues">Help Wanted Issues</option>
-            </select>
-          </label>
-
-          <button
-            :title="`Ordenar de manera ${
-              searchFilters.orderAscending ? 'descendente' : 'ascendente'
-            }`"
-            @click="
-              searchFilters.orderAscending = !searchFilters.orderAscending
-            "
-          >
-            <sort-ascending-icon
-              v-if="searchFilters.orderAscending"
-              class="w-6 h-6"
-            />
-            <sort-descending-icon v-else class="w-6 h-6" />
-          </button>
-        </div>
-      </div>
+      <!-- Filters -->
+      <filters @update="search" />
 
       <!-- Repository Listing -->
       <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
@@ -100,15 +65,18 @@
 
   import { rateLimit } from '~/hooks/octokit'
   import { repos } from '~/hooks/repos'
-  import { useSearch } from '~/hooks/search'
+  import { hasMorePages, useSearch } from '~/hooks/search'
 
   export default defineComponent({
     name: 'Index',
+
+    fetchOnServer: false,
 
     setup() {
       return {
         rateLimit,
         repos,
+        hasMorePages,
         ...useSearch(),
       }
     },
@@ -119,7 +87,5 @@
         { rel: 'preconnect', href: 'https://api.github.com' },
       ],
     },
-
-    fetchOnServer: false,
   })
 </script>
