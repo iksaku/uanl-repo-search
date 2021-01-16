@@ -78,11 +78,7 @@
 
       <!-- Repository Listing -->
       <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        <repo-card
-          v-for="repo in repos.list.values()"
-          :key="repo.id"
-          :repository="repo"
-        />
+        <repo-card v-for="[id, repo] of repos" :key="id" :repository="repo" />
 
         <repo-placeholder
           v-for="i in 9"

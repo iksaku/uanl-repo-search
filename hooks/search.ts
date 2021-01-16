@@ -32,7 +32,7 @@ export function useSearch() {
     searchPagination.total = Math.ceil(response.data.total_count / per_page)
 
     response.data.items.forEach((repo) => {
-      repos.list.set(repo.id, repo)
+      repos.set(repo.id, repo)
     })
   })
 
