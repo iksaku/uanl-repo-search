@@ -8,9 +8,10 @@
         class="flex sm:flex-col items-center justify-center text-center p-4 sm:p-6 space-x-2 sm:space-x-0 sm:space-y-2"
         :class="{ 'animate-pulse': fetchState.pending }"
       >
-        <dd class="text-blue-700 text-2xl sm:text-4xl font-extrabold">
-          {{ repositories }}
-        </dd>
+        <dd
+          class="text-blue-700 text-2xl sm:text-4xl font-extrabold"
+          v-text="repositories"
+        />
         <dt class="text-gray-500 font-medium sm:capitalize">repositorios</dt>
       </div>
 
@@ -19,9 +20,10 @@
         class="flex sm:flex-col items-center justify-center text-center p-4 sm:p-6 space-x-2 sm:space-x-0 sm:space-y-2"
         :class="{ 'animate-pulse': fetchState.pending }"
       >
-        <dd class="text-blue-700 text-2xl sm:text-4xl font-extrabold">
-          {{ languages }}
-        </dd>
+        <dd
+          class="text-blue-700 text-2xl sm:text-4xl font-extrabold"
+          v-text="languages"
+        />
         <dt class="text-gray-500 font-medium sm:capitalize">lenguajes</dt>
       </div>
 
@@ -30,9 +32,10 @@
         class="flex sm:flex-col items-center justify-center text-center p-4 sm:p-6 space-x-2 sm:space-x-0 sm:space-y-2"
         :class="{ 'animate-pulse': fetchState.pending }"
       >
-        <dd class="text-blue-700 text-2xl sm:text-4xl font-extrabold">
-          {{ authors }}
-        </dd>
+        <dd
+          class="text-blue-700 text-2xl sm:text-4xl font-extrabold"
+          v-text="authors"
+        />
         <dt class="text-gray-500 font-medium sm:capitalize">autores</dt>
       </div>
     </dl>

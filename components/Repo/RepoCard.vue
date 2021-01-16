@@ -15,14 +15,15 @@
           :src="repository.owner.avatar_url"
           alt="Author's Avatar"
         />
-        <h2 class="text-gray-900 text-xl overflow-hidden overflow-ellipsis">
-          {{ repository.name }}
-        </h2>
+        <h2
+          class="text-gray-900 text-xl overflow-hidden overflow-ellipsis"
+          v-text="repository.name"
+        />
         <p
+          v-if="repository.description"
           class="text-gray-700 group-hover:text-gray-900 line-clamp-3 transition-colors ease-out duration-200"
-        >
-          {{ repository.description }}
-        </p>
+          v-text="repository.description"
+        />
       </div>
 
       <div class="fixed right-0 top-0 p-4">
@@ -44,7 +45,7 @@
           class="flex-shrink-0 w-4 sm:w-5 h-4 sm:h-5 group-hover:text-blue-500"
         />
 
-        <span v-if="repository.language">{{ repository.language }}</span>
+        <span v-if="repository.language" v-text="repository.language" />
         <span v-else class="italic">N/A</span>
       </div>
 
@@ -59,7 +60,7 @@
           class="flex-shrink-0 w-4 sm:w-5 h-4 sm:h-5 group-hover:text-amber-600"
         />
 
-        <span>{{ repository.stargazers_count }}</span>
+        <span v-text="repository.stargazers_count" />
       </a>
 
       <!-- License -->
@@ -68,9 +69,7 @@
       >
         <scale-icon class="flex-shrink-0 w-4 sm:w-5 h-4 sm:h-5" />
 
-        <span v-if="repository.license">
-          {{ repository.license.spdx_id }}
-        </span>
+        <span v-if="repository.license" v-text="repository.license.spdx_id" />
         <span v-else class="group-hover:text-gray-500 italic">N/A</span>
       </div>
     </div>
