@@ -51,7 +51,7 @@
       <!-- Stars -->
       <a
         class="flex items-center justify-center hover:bg-gray-200 hover:text-gray-900 p-4 sm:p-6 space-x-1 group"
-        :href="`${repository.url}/stargazers`"
+        :href="`${repository.html_url}/stargazers`"
         target="_blank"
         rel="noopener"
       >
