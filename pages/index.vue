@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-16">
+  <div class="pb-8">
     <!-- Header -->
     <div class="bg-blue-900 py-16 sm:pb-24">
       <div class="text-center px-4 sm:px-6 lg:px-8 pb-10 space-y-4">
@@ -49,7 +49,7 @@
             <span>Sort by</span>
 
             <select
-              v-model="filters.sortBy"
+              v-model="searchFilters.sortBy"
               class="border-none bg-transparent rounded-lg"
             >
               <option value="stars">Stars</option>
@@ -61,12 +61,14 @@
 
           <button
             :title="`Ordenar de manera ${
-              filters.orderAscending ? 'descendente' : 'ascendente'
+              searchFilters.orderAscending ? 'descendente' : 'ascendente'
             }`"
-            @click="filters.orderAscending = !filters.orderAscending"
+            @click="
+              searchFilters.orderAscending = !searchFilters.orderAscending
+            "
           >
             <sort-ascending-icon
-              v-if="filters.orderAscending"
+              v-if="searchFilters.orderAscending"
               class="w-6 h-6"
             />
             <sort-descending-icon v-else class="w-6 h-6" />
@@ -90,10 +92,7 @@
       </div>
 
       <intersection-observer
-        v-if="
-          !searchState.pending &&
-          repos.pagination.current < repos.pagination.total
-        "
+        v-if="!searchState.pending && hasMorePages"
         @intersect="loadMore"
       />
     </div>
@@ -101,33 +100,20 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, useFetch } from '@nuxtjs/composition-api'
+  import { defineComponent } from '@nuxtjs/composition-api'
 
-  import { filters } from '~/hooks/filters'
-  import { rateLimit } from '~/hooks/rateLimit'
-  import { repos, search as _repoSearch } from '~/hooks/repos'
+  import { rateLimit } from '~/hooks/octokit'
+  import { repos } from '~/hooks/repos'
+  import { useSearch } from '~/hooks/search'
 
   export default defineComponent({
     name: 'Index',
 
     setup() {
-      const { fetch: search, fetchState: searchState } = useFetch(_repoSearch)
-
-      function loadMore() {
-        if (repos.pagination.current >= repos.pagination.total) return
-
-        ++repos.pagination.current
-
-        search()
-      }
-
       return {
         rateLimit,
         repos,
-        filters,
-        search,
-        searchState,
-        loadMore,
+        ...useSearch(),
       }
     },
 

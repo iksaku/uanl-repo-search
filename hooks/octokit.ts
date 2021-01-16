@@ -2,36 +2,29 @@ import { GetResponseDataTypeFromEndpointMethod } from '@octokit/types'
 import { Octokit } from '@octokit/rest'
 import { throttling } from '@octokit/plugin-throttling'
 
-import { rateLimit } from '~/hooks/rateLimit'
+import { reactive } from '@nuxtjs/composition-api'
 
 const UserOctokit = Octokit.plugin(throttling)
 
 export const per_page = 100
 
+export const rateLimit = reactive({
+  abused: false,
+  limited: false,
+})
+
 export const octokit = new UserOctokit({
   throttle: {
-    onRateLimit: (retryAfter: number, options: any) => {
+    onRateLimit: (_retryAfter: number, options: any) => {
       rateLimit.limited = true
 
-      if (options.request.retryCount > 3) {
-        rateLimit.retryAfter = false
-        return false
-      }
-
-      rateLimit.retryAfter = retryAfter
-      return true
+      return options.request.retryCount <= 3
     },
 
-    onAbuseLimit: (retryAfter: number, options: any) => {
+    onAbuseLimit: (_retryAfter: number, options: any) => {
       rateLimit.abused = true
 
-      if (options.request.retryCount > 3) {
-        rateLimit.retryAfter = false
-        return false
-      }
-
-      rateLimit.retryAfter = retryAfter
-      return true
+      return options.request.retryCount <= 3
     },
   },
 })
