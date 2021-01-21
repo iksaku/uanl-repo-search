@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col justify-between bg-white rounded-lg hover:shadow-xl divide-y overflow-hidden transform ease-out duration-200 hover:-translate-y-1"
+    class="flex flex-col justify-between bg-white rounded-lg shadow hover:shadow-xl divide-y overflow-hidden transform ease-out duration-200 hover:-translate-y-1"
   >
     <!-- Repo Description -->
     <a

@@ -3,7 +3,7 @@
     <!-- Search bar -->
     <input
       v-model.lazy="search"
-      class="w-full md:max-w-lg bg-gray-100 placeholder-blue-900 placeholder-opacity-80 border-blue-900 rounded-lg"
+      class="w-full md:max-w-lg bg-gray-100 focus:bg-white placeholder-blue-900 placeholder-opacity-80 border-blue-900 rounded-lg"
       type="search"
       placeholder="Buscar Repositorios"
       aria-label="Buscar Repositorios"
@@ -17,7 +17,7 @@
 
       <select
         v-model="filter"
-        class="min-w-0 bg-gray-100 border-blue-900 rounded-lg truncate pl-2 md:pl-4 py-2"
+        class="min-w-0 bg-gray-100 focus:bg-white border-blue-900 rounded-lg truncate pl-2 md:pl-4 py-2"
       >
         <option value="best-match">Mejor resultado</option>
         <option value="most-stars">Más estrellas</option>
