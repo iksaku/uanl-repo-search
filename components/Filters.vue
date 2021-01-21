@@ -48,16 +48,16 @@
       watch([search, filter], ([search, filter]) => {
         searchFilters.q = search
 
-        if (filter === 'best-match') {
-          searchFilters.sort = undefined
-          searchFilters.order = undefined
-        } else if (filter.endsWith('updated')) {
-          searchFilters.sort = 'updated'
-          searchFilters.order = filter.startsWith('recently') ? 'desc' : 'asc'
-        } else {
-          searchFilters.sort = filter.split('-')[1]
-          searchFilters.order = filter.startsWith('most') ? 'desc' : 'asc'
-        }
+        const sort = filter.split('-')[1]
+
+        searchFilters.sort = ['updated', 'stars', 'forks'].includes(sort)
+          ? (sort as 'updated' | 'stars' | 'forks')
+          : undefined
+
+        searchFilters.order =
+          filter.startsWith('most') || filter.startsWith('recently')
+            ? 'desc'
+            : 'asc'
 
         repos.clear()
 
