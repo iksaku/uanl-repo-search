@@ -59,7 +59,7 @@
       </div>
 
       <div
-        v-if="searchState.pending"
+        v-show="searchState.pending"
         class="grid gap-8 md:grid-cols-2 xl:grid-cols-3"
       >
         <repo-placeholder v-for="i in 9" :key="i" />
