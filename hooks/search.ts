@@ -2,6 +2,7 @@ import { computed, reactive, useFetch } from '@nuxtjs/composition-api'
 import {
   octokit,
   per_page,
+  rateLimit,
   Repository,
   RepositorySearchParameters,
 } from '~/hooks/octokit'
@@ -33,6 +34,8 @@ export function useSearch() {
       page: searchPagination.current,
       per_page,
     })
+
+    rateLimit.abused = rateLimit.limited = false
 
     searchPagination.total = Math.ceil(response.data.total_count / per_page)
 

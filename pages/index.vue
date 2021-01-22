@@ -44,15 +44,28 @@
       <!-- Repository Listing -->
       <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
         <repo-card v-for="[id, repo] of repos" :key="id" :repository="repo" />
-
-        <repo-placeholder
-          v-for="i in 9"
-          v-show="searchState.pending"
-          :key="i"
-        />
       </div>
 
-      <intersection-observer
+      <div
+        v-if="rateLimit.abused || rateLimit.limited"
+        class="flex flex-col items-center justify-center text-blueGray-800 py-4 space-y-2"
+      >
+        <p class="text-xl sm:text-2xl font-semibold">Por favor espera...</p>
+        <p class="sm:text-lg font-medium">
+          Has alcanzado el límite de consultas por minuto. Realizaremos tu
+          consulta en un momento.
+        </p>
+        <lazy-loading-icon class="w-6 h-6" />
+      </div>
+
+      <div
+        v-if="searchState.pending"
+        class="grid gap-8 md:grid-cols-2 xl:grid-cols-3"
+      >
+        <repo-placeholder v-for="i in 9" :key="i" />
+      </div>
+
+      <lazy-intersection-observer
         v-if="!searchState.pending && hasMorePages"
         @intersect="loadMore"
       />

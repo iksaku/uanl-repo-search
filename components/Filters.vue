@@ -19,13 +19,25 @@
         v-model="filter"
         class="min-w-0 bg-gray-100 focus:bg-white border-blue-900 rounded-lg truncate pl-2 md:pl-4 py-2"
       >
-        <option value="best-match">Mejor resultado</option>
-        <option value="most-stars">Más estrellas</option>
-        <option value="fewest-stars">Menos estrellas</option>
-        <option value="most-forks">Más copias (Forks)</option>
-        <option value="fewest-forks">Menos copias (Forks)</option>
-        <option value="recently-updated">Actualizaciones recientes</option>
-        <option value="least-recently-updated">
+        <option :value="{ sort: undefined, order: undefined }">
+          Mejor resultado
+        </option>
+        <option :value="{ sort: 'stars', order: 'desc' }">
+          Más estrellas &nbsp;
+        </option>
+        <option :value="{ sort: 'stars', order: 'asc' }">
+          Menos estrellas
+        </option>
+        <option :value="{ sort: 'forks', order: 'desc' }">
+          Más copias (Forks)
+        </option>
+        <option :value="{ sort: 'forks', order: 'asc' }">
+          Menos copias (Forks)
+        </option>
+        <option :value="{ sort: 'updated', order: 'desc' }">
+          Actualizaciones recientes
+        </option>
+        <option :value="{ sort: 'updated', order: 'asc' }">
           Actualizaciones menos recientes
         </option>
       </select>
@@ -35,6 +47,7 @@
 
 <script lang="ts">
   import { defineComponent, ref, watch } from '@nuxtjs/composition-api'
+  import { RepositorySearchParameters } from '~/hooks/octokit'
   import { repos } from '~/hooks/repos'
   import { searchFilters, searchPagination } from '~/hooks/search'
 
@@ -43,21 +56,17 @@
 
     setup(_props, { emit }) {
       const search = ref<string>('')
-      const filter = ref<string>('best-match')
+      const filter = ref<Pick<RepositorySearchParameters, 'sort' | 'order'>>({
+        sort: undefined,
+        order: undefined,
+      })
 
-      watch([search, filter], ([search, filter]) => {
-        searchFilters.q = search
+      watch([search, filter], () => {
+        searchFilters.q = search.value
 
-        const sort = filter.split('-')[1]
+        searchFilters.sort = filter.value.sort
 
-        searchFilters.sort = ['updated', 'stars', 'forks'].includes(sort)
-          ? (sort as 'updated' | 'stars' | 'forks')
-          : undefined
-
-        searchFilters.order =
-          filter.startsWith('most') || filter.startsWith('recently')
-            ? 'desc'
-            : 'asc'
+        searchFilters.order = filter.value.order
 
         repos.clear()
 
