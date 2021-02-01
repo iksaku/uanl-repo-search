@@ -48,7 +48,7 @@
 
       <div
         v-if="rateLimit.abused || rateLimit.limited"
-        class="flex flex-col items-center justify-center text-blueGray-800 py-4 space-y-2"
+        class="flex flex-col items-center justify-center text-blueGray-800 text-center py-4 space-y-2"
       >
         <p class="text-xl sm:text-2xl font-semibold">Por favor espera...</p>
         <p class="sm:text-lg font-medium">
