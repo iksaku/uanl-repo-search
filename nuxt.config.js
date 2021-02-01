@@ -19,14 +19,6 @@ export default {
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
-    script: [
-      {
-        src: 'https://hey.jorgeglz.io/js/plausible.js',
-        'data-domain': 'uanl-repos.jorgeglz.io',
-        async: true,
-        defer: true,
-      },
-    ],
   },
 
   css: [],
