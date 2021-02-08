@@ -882,10 +882,10 @@
   dependencies:
     purgecss "^3.1.3"
 
-"@iksaku/tailwindcss-plugins@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@iksaku/tailwindcss-plugins/-/tailwindcss-plugins-2.1.0.tgz#9cfeb5b5191d3aaa9ed58b08a97e9863d9ffca02"
-  integrity sha512-6MzAg5A+zg/XWMvLDWhvEILFlNCtPffAJIYpV6KseChW2khMo1FvWn609mtSl1dytwfmFmaq98qRWrT+Z/xxQg==
+"@iksaku/tailwindcss-plugins@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@iksaku/tailwindcss-plugins/-/tailwindcss-plugins-3.0.0.tgz#63d8e7a22bc89573ef77927224b77b8a504715a9"
+  integrity sha512-u0NN1ZK5wuEEqafrXG2vP/t5/97Sl8yu5r+RgcacFqY325opkYRhx4lhHlIcFUUiGOYmCfVCnierbtRgfV8UUA==
   dependencies:
     lodash "^4.17.15"
 
