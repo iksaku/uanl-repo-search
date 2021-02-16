@@ -24,7 +24,7 @@
     "@octokit/rest": "^18.1.0",
     "core-js": "^3.6.5",
     "millify": "^3.5.0",
-    "nuxt": "^2.14.6"
+    "nuxt": "^2.15.0"
   },
   "devDependencies": {
     "@iksaku/tailwindcss-plugins": "^2.1.0",
