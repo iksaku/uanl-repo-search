@@ -29,7 +29,7 @@
   "devDependencies": {
     "@iksaku/tailwindcss-plugins": "^2.1.0",
     "@nuxt/http": "^0.6.2",
-    "@nuxt/types": "^2.15.0",
+    "@nuxt/types": "^2.15.1",
     "@nuxt/typescript-build": "^2.0.3",
     "@nuxtjs/eslint-config": "^5.0.0",
     "@nuxtjs/eslint-config-typescript": "^5.0.0",
