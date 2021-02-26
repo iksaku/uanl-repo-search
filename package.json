@@ -18,19 +18,19 @@
     }
   },
   "dependencies": {
-    "@nuxt/typescript-runtime": "^2.0.0",
-    "@nuxtjs/composition-api": "^0.20.1",
+    "@nuxt/typescript-runtime": "^2.0.2",
+    "@nuxtjs/composition-api": "^0.20.2",
     "@octokit/plugin-throttling": "^3.3.4",
-    "@octokit/rest": "^18.1.1",
-    "core-js": "^3.6.5",
+    "@octokit/rest": "^18.2.1",
+    "core-js": "^3.9.0",
     "millify": "^3.5.0",
-    "nuxt": "^2.15.0"
+    "nuxt": "^2.15.2"
   },
   "devDependencies": {
     "@iksaku/tailwindcss-plugins": "^2.1.0",
     "@nuxt/http": "^0.6.2",
-    "@nuxt/types": "^2.15.0",
-    "@nuxt/typescript-build": "^2.0.3",
+    "@nuxt/types": "^2.15.2",
+    "@nuxt/typescript-build": "^2.0.6",
     "@nuxtjs/eslint-config": "^5.0.0",
     "@nuxtjs/eslint-config-typescript": "^5.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
