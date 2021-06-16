@@ -7,7 +7,7 @@
         <!-- Repositories -->
         <div
           class="flex sm:flex-col items-center justify-center text-center p-4 sm:p-6 space-x-2 sm:space-x-0 sm:space-y-2"
-          :class="{ 'animate-pulse': fetchState.pending }"
+          :class="{ 'animate-pulse': loading }"
         >
           <dd
             class="text-blue-700 text-2xl sm:text-4xl font-extrabold"
@@ -19,7 +19,7 @@
         <!-- Languages -->
         <div
           class="flex sm:flex-col items-center justify-center text-center p-4 sm:p-6 space-x-2 sm:space-x-0 sm:space-y-2"
-          :class="{ 'animate-pulse': fetchState.pending }"
+          :class="{ 'animate-pulse': loading }"
         >
           <dd
             class="text-blue-700 text-2xl sm:text-4xl font-extrabold"
@@ -31,7 +31,7 @@
         <!-- Authors -->
         <div
           class="flex sm:flex-col items-center justify-center text-center p-4 sm:p-6 space-x-2 sm:space-x-0 sm:space-y-2"
-          :class="{ 'animate-pulse': fetchState.pending }"
+          :class="{ 'animate-pulse': loading }"
         >
           <dd
             class="text-blue-700 text-2xl sm:text-4xl font-extrabold"
@@ -45,57 +45,36 @@
 </template>
 
 <script lang="ts">
-  import millify from 'millify'
-  import {
-    computed,
-    defineComponent,
-    reactive,
-    useContext,
-    useFetch,
-  } from '@nuxtjs/composition-api'
+import millify from 'millify'
+import { computed, defineComponent } from 'vue'
+import { useFetch } from '@/hooks/fetch'
 
-  type Stats = {
-    authors: number
-    languages: number
-    repositories: number
-  }
+type Stats = {
+  authors: number
+  languages: number
+  repositories: number
+}
 
-  export default defineComponent({
-    name: 'Stats',
+export default defineComponent({
+  name: 'Stats',
 
-    fetchOnServer: false,
+  setup() {
+    function numberFormat(value: number) {
+      return millify(value, { precision: 0 })
+    }
 
-    setup() {
-      const { $http } = useContext()
+    const { loading, data } = useFetch<Stats>('/api/stats')
 
-      function numberFormat(value: number) {
-        return millify(value, { precision: 0 })
-      }
+    const authors = computed(() => numberFormat(data?.value?.authors ?? 0))
+    const languages = computed(() => numberFormat(data?.value?.languages ?? 0))
+    const repositories = computed(() => numberFormat(data?.value?.repositories ?? 0))
 
-      const stats = reactive<Stats>({
-        authors: 0,
-        languages: 0,
-        repositories: 0,
-      })
-
-      const { fetchState } = useFetch(async () => {
-        const response = await $http.$get<Stats>('/api/stats')
-
-        stats.authors = response.authors
-        stats.languages = response.languages
-        stats.repositories = response.repositories
-      })
-
-      const authors = computed(() => numberFormat(stats.authors))
-      const languages = computed(() => numberFormat(stats.languages))
-      const repositories = computed(() => numberFormat(stats.repositories))
-
-      return {
-        fetchState,
-        authors,
-        languages,
-        repositories,
-      }
-    },
-  })
+    return {
+      loading,
+      authors,
+      languages,
+      repositories,
+    }
+  },
+})
 </script>

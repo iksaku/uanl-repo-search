@@ -1,12 +1,13 @@
-import { computed, reactive, useFetch } from '@nuxtjs/composition-api'
+import { computed, reactive } from 'vue'
+import { useFetch } from '@/hooks/fetch'
 import {
   octokit,
   per_page,
   rateLimit,
   Repository,
   RepositorySearchParameters,
-} from '~/hooks/octokit'
-import { repos } from '~/hooks/repos'
+} from '@/hooks/octokit'
+import { repos } from '@/hooks/repos'
 
 export const searchFilters = reactive({
   q: '',
@@ -24,7 +25,7 @@ export const hasMorePages = computed(() => {
 })
 
 export function useSearch() {
-  const { fetch: search, fetchState: searchState } = useFetch(async () => {
+  const { loading, refresh: search } = useFetch('search-repositories', async () => {
     if (searchPagination.current > searchPagination.total) return
 
     const response = await octokit.search.repos({
@@ -45,17 +46,17 @@ export function useSearch() {
   })
 
   function loadMore() {
-    if (searchState.pending) return
+    if (loading.value) return
     if (!hasMorePages.value) return
 
     ++searchPagination.current
 
-    search()
+    setTimeout(search, 0)
   }
 
   return {
-    loadMore,
+    loading,
     search,
-    searchState,
+    loadMore,
   }
 }

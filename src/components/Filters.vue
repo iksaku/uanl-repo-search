@@ -23,7 +23,7 @@
           Mejor resultado
         </option>
         <option :value="{ sort: 'stars', order: 'desc' }">
-          Más estrellas &nbsp;
+          Más estrellas
         </option>
         <option :value="{ sort: 'stars', order: 'asc' }">
           Menos estrellas
@@ -46,23 +46,27 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watch } from '@nuxtjs/composition-api'
-  import { RepositorySearchParameters } from '~/hooks/octokit'
-  import { repos } from '~/hooks/repos'
-  import { searchFilters, searchPagination } from '~/hooks/search'
+  import { defineComponent, ref, watch } from 'vue'
+  import { RepositorySearchParameters } from '@/hooks/octokit'
+  import { repos } from '@/hooks/repos'
+  import { searchFilters, searchPagination, useSearch } from '@/hooks/search'
 
   export default defineComponent({
     name: 'Filters',
 
-    setup(_props, { emit }) {
-      const search = ref<string>('')
+    setup(_props) {
+      const { search } = useSearch()
+
+      const searchString = ref<string>('')
       const filter = ref<Pick<RepositorySearchParameters, 'sort' | 'order'>>({
         sort: undefined,
         order: undefined,
       })
 
-      watch([search, filter], () => {
-        searchFilters.q = search.value
+      watch([searchString, filter], () => {
+        console.log(searchString, filter)
+
+        searchFilters.q = searchString.value
 
         searchFilters.sort = filter.value.sort
 
@@ -73,11 +77,11 @@
         searchPagination.total = 1
         searchPagination.current = 1
 
-        emit('update')
+        search()
       })
 
       return {
-        search,
+        search: searchString,
         filter,
       }
     },

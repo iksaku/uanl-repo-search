@@ -1,3 +1,14 @@
+### Astro template
+# Build output
+dist
+
+# Dependencies
+.snowpack/
+
+# Environment Variables
+.env
+.env.production
+
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
 # Logs

@@ -1,9 +1,8 @@
-import { Octokit } from '@octokit/rest'
+import { Octokit, RestEndpointMethodTypes } from '@octokit/rest'
 import { throttling } from '@octokit/plugin-throttling'
 import { GetResponseDataTypeFromEndpointMethod } from '@octokit/types'
-import { RestEndpointMethodTypes } from '@octokit/plugin-rest-endpoint-methods/dist-types/generated/parameters-and-response-types'
 
-import { reactive } from '@nuxtjs/composition-api'
+import { reactive } from 'vue'
 
 const UserOctokit = Octokit.plugin(throttling)
 

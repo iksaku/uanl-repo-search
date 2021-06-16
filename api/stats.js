@@ -43,6 +43,7 @@ export default async (_request, response) => {
     // Cache response on client for 5 minutes and on network for 1 day
     'max-age=300, s-maxage=86400, stale-while-revalidate'
   )
+
   response.status(200).json({
     authors: authors.size,
     languages: languages.size,
