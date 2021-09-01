@@ -21,7 +21,7 @@
     "@nuxt/typescript-runtime": "^2.0.2",
     "@nuxtjs/composition-api": "^0.20.2",
     "@octokit/plugin-throttling": "^3.3.4",
-    "@octokit/rest": "^18.2.1",
+    "@octokit/rest": "^18.10.0",
     "core-js": "^3.9.0",
     "millify": "^3.5.0",
     "nuxt": "^2.15.2"
