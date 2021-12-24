@@ -22,7 +22,7 @@
     "@nuxtjs/composition-api": "^0.20.2",
     "@octokit/plugin-throttling": "^3.3.4",
     "@octokit/rest": "^18.2.1",
-    "core-js": "^3.9.0",
+    "core-js": "^3.20.1",
     "millify": "^3.5.0",
     "nuxt": "^2.15.2"
   },
