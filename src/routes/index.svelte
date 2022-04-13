@@ -1,7 +1,4 @@
 <script>
-  import '$assets/app.css'
-  import logo from '$assets/logo.svg?url'
-
   import { onMount } from 'svelte'
   import { Filters, Logo, RepoCard, Stats } from '$components'
   import { Spinner } from '$components/Icons'
@@ -14,11 +11,6 @@
     search.freshFetch()
   })
 </script>
-
-<svelte:head>
-  <meta name="description" content="Descubre proyectos creados por alumnos y docentes de la Universidad Autónoma de Nuevo León">
-  <meta name="og:image" content={logo}>
-</svelte:head>
 
 <div class='pb-8'>
   <!-- Header -->
