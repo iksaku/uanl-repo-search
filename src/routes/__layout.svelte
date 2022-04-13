@@ -9,6 +9,7 @@
     <title>UANL Repo Search</title>
     <meta name="og:title" content="UANL Repo Search">
     <meta name="og:description" content="Descubre proyectos creados por alumnos y docentes de la Universidad Autónoma de Nuevo León">
+    <meta name="og:type" content="website">
     <meta name="og:image" content={logo}>
 
     <meta name="twitter:card" content="summary">
