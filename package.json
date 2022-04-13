@@ -1,53 +1,48 @@
 {
-  "name": "uanl-repo-search",
-  "version": "1.0.0",
-  "private": true,
+  "name": "uanl-repo-search-svelte",
+  "version": "0.0.1",
   "scripts": {
-    "dev": "nuxt-ts",
-    "build": "nuxt-ts build",
-    "start": "nuxt-ts start",
-    "generate": "nuxt-ts generate",
-    "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore ."
+    "dev": "svelte-kit dev",
+    "build": "svelte-kit build",
+    "package": "svelte-kit package",
+    "preview": "svelte-kit preview",
+    "prepare": "svelte-kit sync",
+    "test": "playwright test",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
+    "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
   },
-  "lint-staged": {
-    "*.{ts,js,vue}": "eslint"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
+  "type": "module",
   "dependencies": {
-    "@nuxt/typescript-runtime": "^2.0.2",
-    "@nuxtjs/composition-api": "^0.20.2",
-    "@octokit/plugin-throttling": "^3.3.4",
-    "@octokit/rest": "^18.2.1",
-    "core-js": "^3.9.0",
-    "millify": "^3.5.0",
-    "nuxt": "^2.15.2"
+    "@fontsource/fira-mono": "^4.5.0",
+    "@lukeed/uuid": "^2.0.0",
+    "cookie": "^0.4.1",
+    "dotenv": "^16.0.0"
   },
   "devDependencies": {
-    "@iksaku/tailwindcss-plugins": "^2.1.0",
-    "@nuxt/http": "^0.6.2",
-    "@nuxt/types": "^2.15.2",
-    "@nuxt/typescript-build": "^2.0.6",
-    "@nuxtjs/eslint-config": "^5.0.0",
-    "@nuxtjs/eslint-config-typescript": "^5.0.0",
-    "@nuxtjs/eslint-module": "^3.0.2",
-    "@nuxtjs/tailwindcss": "^3.4.2",
-    "@tailwindcss/forms": "^0.2.1",
-    "@tailwindcss/line-clamp": "^0.2.0",
-    "@tailwindcss/postcss7-compat": "npm:@tailwindcss/postcss7-compat",
-    "autoprefixer": "^9",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.20.0",
-    "eslint-config-prettier": "^7.1.0",
-    "eslint-plugin-nuxt": "^2.0.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "husky": "^4.0.0",
-    "lint-staged": "^10.5.4",
-    "postcss": "^7",
-    "prettier": "^2.1.2",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat"
+    "@playwright/test": "^1.20.0",
+    "@sveltejs/adapter-auto": "next",
+    "@sveltejs/kit": "next",
+    "@sveltestack/svelte-query": "^1.6.0",
+    "@tailwindcss/forms": "^0.5.0",
+    "@tailwindcss/line-clamp": "^0.3.1",
+    "@types/cookie": "^0.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
+    "autoprefixer": "^10.4.4",
+    "broadcast-channel": "^4.10.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-svelte3": "^3.2.1",
+    "postcss": "^8.4.12",
+    "prettier": "^2.5.1",
+    "prettier-plugin-svelte": "^2.5.0",
+    "svelte": "^3.46.0",
+    "svelte-check": "^2.2.6",
+    "svelte-preprocess": "^4.10.1",
+    "tailwindcss": "^3.0.23",
+    "tslib": "^2.3.1",
+    "typescript": "~4.6.2"
   }
 }
