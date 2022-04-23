@@ -1,8 +1,5 @@
 import type { RequestHandlerOutput } from '@sveltejs/kit'
-import dotenv from 'dotenv'
 import { api } from '$lib/util'
-
-dotenv.config()
 
 type Repository = {
   owner: {
