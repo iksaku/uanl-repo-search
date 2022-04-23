@@ -24,7 +24,7 @@ type ApiResponse = {
 }
 
 export async function get(): Promise<RequestHandlerOutput> {
-  const token = process.env['GITHUB_TOKEN']
+  const token = process.env.GITHUB_TOKEN
 
   const authors = new Set()
   const languages = new Set()

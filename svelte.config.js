@@ -2,6 +2,8 @@ import adapter from '@sveltejs/adapter-vercel'
 import preprocess from 'svelte-preprocess'
 import path from 'path'
 
+import DotEnv from './plugins/dotenv.js'
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   // Consult https://github.com/sveltejs/svelte-preprocess
@@ -9,15 +11,26 @@ const config = {
   preprocess: preprocess(),
 
   kit: {
-    adapter: adapter(),
+    adapter: adapter({
+      edge: true,
+      split: true
+    }),
 
-    vite: {
-      resolve: {
-        alias: {
-          $assets: path.resolve('./src/assets'),
-          $components: path.resolve('./src/components'),
+    prerender: {
+      default: true,
+    },
+
+    vite: () => {
+      return {
+        resolve: {
+          alias: {
+            $assets: path.resolve('./src/assets'),
+            $components: path.resolve('./src/components'),
+          },
         },
-      },
+
+        plugins: [DotEnv()],
+      }
     },
   },
 }
