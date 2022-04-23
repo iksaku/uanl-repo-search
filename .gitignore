@@ -9,3 +9,4 @@ node_modules
 .vercel
 .output
 .idea
+/.vercel_build_output
