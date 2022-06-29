@@ -3,6 +3,7 @@ import preprocess from 'svelte-preprocess'
 import path from 'path'
 
 import DotEnv from './plugins/dotenv.js'
+import { imagetools } from 'vite-imagetools'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -29,7 +30,7 @@ const config = {
           },
         },
 
-        plugins: [DotEnv()],
+        plugins: [DotEnv(), imagetools()],
       }
     },
   },
