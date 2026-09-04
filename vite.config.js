@@ -11,5 +11,8 @@ export default {
     },
   },
 
-  plugins: [sveltekit(), imagetools({ include: /^[^?]+\.(avif|gif|heif|jpeg|jpg|png|svg|tiff|webp)(\?.*)?$/ })],
+  plugins: [
+    sveltekit(),
+    imagetools({ include: /^[^?]+\.(avif|gif|heif|jpeg|jpg|png|svg|tiff|webp)(\?.*)?$/ }),
+  ],
 }

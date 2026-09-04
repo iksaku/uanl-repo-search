@@ -1,5 +1,5 @@
 import type { Readable } from 'svelte/store'
-import { derived, get, writable } from 'svelte/store'
+import { get, writable } from 'svelte/store'
 import { api } from './util'
 
 type Repository = {

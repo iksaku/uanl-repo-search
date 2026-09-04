@@ -30,11 +30,11 @@ export const prerender = false
 export const GET: RequestHandler = async () => {
   const authors = new Set()
   const languages = new Set()
-  let repositories = 0
+  let repositories: number
 
-  let cursor = {
-    hasNextPage: false,
-    endCursor: null,
+  let cursor: {
+    hasNextPage: boolean
+    endCursor: string | null
   }
 
   do {

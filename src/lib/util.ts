@@ -1,4 +1,4 @@
-export function blank(value: any): boolean {
+export function blank(value: unknown): boolean {
   if (value === null) {
     return true
   }
@@ -22,14 +22,14 @@ export function blank(value: any): boolean {
   return !value
 }
 
-export function filled(value: any): boolean {
+export function filled(value: unknown): boolean {
   return !blank(value)
 }
 
 export function recordFilter(
-  o: Record<string, any>,
-  predicate: (value: any, index: string) => {}
-): Record<string, any> {
+  o: Record<string, unknown>,
+  predicate: (value: unknown, index: string) => boolean
+): Record<string, unknown> {
   return Object.fromEntries(
     Object.entries(o).filter((entry) => {
       const [key, value] = entry
@@ -42,13 +42,16 @@ export function recordFilter(
 export const api = {
   async get<TData extends object, TError = unknown>(
     url: string,
-    query?: object,
+    query?: Record<string, unknown>,
     headers?: HeadersInit
   ): Promise<TData> {
     const compiledUrl = new URL(url)
 
     if (query) {
-      compiledUrl.search = new URLSearchParams(recordFilter(query, filled)).toString()
+      const filtered = recordFilter(query, filled)
+      compiledUrl.search = new URLSearchParams(
+        Object.fromEntries(Object.entries(filtered).map(([key, value]) => [key, String(value)]))
+      ).toString()
     }
 
     return await api_middleware<TData, TError>(compiledUrl.toString(), {
@@ -61,7 +64,7 @@ export const api = {
 
   async post<TData extends object, TError = unknown>(
     url: string,
-    body: object,
+    body: Record<string, unknown>,
     headers?: HeadersInit
   ): Promise<TData> {
     return await api_middleware<TData, TError>(url, {
