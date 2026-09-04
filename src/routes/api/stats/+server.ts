@@ -1,4 +1,3 @@
-import { env } from '$env/dynamic/private'
 import { json } from '@sveltejs/kit'
 import { api } from '$lib/util'
 import type { RequestHandler } from './$types'
@@ -27,7 +26,13 @@ type ApiResponse = {
 
 export const prerender = false
 
-export const GET: RequestHandler = async () => {
+export const GET: RequestHandler = async ({ platform }) => {
+  const token = platform?.env.GITHUB_TOKEN
+
+  if (!token) {
+    return json({ message: 'GITHUB_TOKEN binding is not configured' }, { status: 500 })
+  }
+
   const authors = new Set()
   const languages = new Set()
   let repositories: number
@@ -64,7 +69,9 @@ export const GET: RequestHandler = async () => {
         }`,
       },
       {
-        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+        Authorization: `Bearer ${token}`,
+        // GitHub rejects requests without a User-Agent; workerd sends none by default
+        'User-Agent': 'uanl-repo-search',
       }
     )
 

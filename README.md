@@ -1,40 +1,49 @@
-# create-svelte
+# UANL Repo Search
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Discover repositories created by students and faculty of the Universidad Autónoma de Nuevo León.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm init svelte@next
-
-# create a new project in my-app
-npm init svelte@next my-app
-```
-
-> Note: the `@next` is temporary
+SvelteKit app deployed on Cloudflare Workers. The index page is prerendered (static assets); `/api/stats` is a Worker endpoint that aggregates counts from GitHub's GraphQL API.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+```bash
+pnpm install
+pnpm dev        # vite dev server
+```
+
+To exercise the Worker runtime (and `/api/stats`) locally:
 
 ```bash
-npm run dev
+pnpm build
+pnpm exec wrangler dev
+```
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+`/api/stats` needs a GitHub token (fine-grained PAT, public read-only is enough). Copy `.dev.vars.example` to `.dev.vars` (gitignored, loaded by `wrangler dev`) and fill it in:
+
+```
+GITHUB_TOKEN=ghp_...
+```
+
+Without the binding, `/api/stats` responds 500 with `GITHUB_TOKEN binding is not configured` — expected.
+
+To set up the token for both local dev and production, run the wizard:
+
+```bash
+./scripts/setup-github-token.sh
 ```
 
 ## Building
 
-To create a production version of your app:
-
 ```bash
-npm run build
+pnpm build      # emits the Cloudflare Worker + assets into .svelte-kit/cloudflare
 ```
 
-You can preview the production build with `npm run preview`.
+Deploy with `pnpm exec wrangler deploy`.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## Linting
+
+```bash
+pnpm check      # svelte-check
+pnpm lint       # prettier --check + eslint
+pnpm format     # prettier --write
+```
