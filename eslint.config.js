@@ -7,7 +7,6 @@ import ts from 'typescript-eslint'
 export default ts.config(
   {
     ignores: [
-      '**/.vercel/**',
       '**/build/**',
       '**/.svelte-kit/**',
       '**/package/**',

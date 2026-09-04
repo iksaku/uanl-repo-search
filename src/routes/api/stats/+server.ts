@@ -114,7 +114,7 @@ export const GET: RequestHandler = async ({ request, platform }) => {
 
   // Only successful responses reach this point: a failed GitHub fetch throws
   // above, so the cache is never poisoned. s-maxage=86400 gives the edge cache
-  // 24h while browsers keep 5 minutes, matching the old Vercel semantics.
+  // 24h while browsers keep 5 minutes.
   platform?.ctx.waitUntil(cache?.put(request, response.clone()) ?? Promise.resolve())
 
   return response
