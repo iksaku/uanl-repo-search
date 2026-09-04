@@ -26,7 +26,18 @@ type ApiResponse = {
 
 export const prerender = false
 
-export const GET: RequestHandler = async ({ platform }) => {
+export const GET: RequestHandler = async ({ request, platform }) => {
+  // caches.default is the Cloudflare edge cache; absent under plain vite dev
+  const cache = globalThis.caches?.default
+
+  if (cache) {
+    const cached = await cache.match(request)
+
+    if (cached) {
+      return cached
+    }
+  }
+
   const token = platform?.env.GITHUB_TOKEN
 
   if (!token) {
@@ -88,7 +99,7 @@ export const GET: RequestHandler = async ({ platform }) => {
     cursor = search.pageInfo
   } while (cursor.hasNextPage)
 
-  return json(
+  const response = json(
     {
       authors: authors.size,
       languages: languages.size,
@@ -100,4 +111,11 @@ export const GET: RequestHandler = async ({ platform }) => {
       },
     }
   )
+
+  // Only successful responses reach this point: a failed GitHub fetch throws
+  // above, so the cache is never poisoned. s-maxage=86400 gives the edge cache
+  // 24h while browsers keep 5 minutes, matching the old Vercel semantics.
+  platform?.ctx.waitUntil(cache?.put(request, response.clone()) ?? Promise.resolve())
+
+  return response
 }
