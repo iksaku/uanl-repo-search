@@ -1,5 +1,7 @@
-/// <reference types="@sveltejs/kit" />
-
-// See https://kit.svelte.dev/docs/types#the-app-namespace
+// See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
-declare namespace App {}
+declare global {
+  namespace App {}
+}
+
+export {}

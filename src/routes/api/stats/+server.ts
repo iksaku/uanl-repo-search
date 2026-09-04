@@ -1,5 +1,7 @@
-import type { RequestHandlerOutput } from '@sveltejs/kit'
+import { env } from '$env/dynamic/private'
+import { json } from '@sveltejs/kit'
 import { api } from '$lib/util'
+import type { RequestHandler } from './$types'
 
 type Repository = {
   owner: {
@@ -23,9 +25,9 @@ type ApiResponse = {
   }
 }
 
-export async function get(): Promise<RequestHandlerOutput> {
-  const token = process.env.GITHUB_TOKEN
+export const prerender = false
 
+export const GET: RequestHandler = async () => {
   const authors = new Set()
   const languages = new Set()
   let repositories = 0
@@ -62,7 +64,7 @@ export async function get(): Promise<RequestHandlerOutput> {
         }`,
       },
       {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
       }
     )
 
@@ -79,16 +81,16 @@ export async function get(): Promise<RequestHandlerOutput> {
     cursor = search.pageInfo
   } while (cursor.hasNextPage)
 
-  return {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': 'max-age=300, s-maxage=86400, stale-while-revalidate',
-    },
-    body: {
+  return json(
+    {
       authors: authors.size,
       languages: languages.size,
       repositories,
     },
-  }
+    {
+      headers: {
+        'Cache-Control': 'max-age=300, s-maxage=86400, stale-while-revalidate',
+      },
+    }
+  )
 }

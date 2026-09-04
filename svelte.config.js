@@ -1,38 +1,15 @@
 import adapter from '@sveltejs/adapter-vercel'
-import preprocess from 'svelte-preprocess'
-import path from 'path'
-
-import DotEnv from './plugins/dotenv.js'
-import { imagetools } from 'vite-imagetools'
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  // Consult https://github.com/sveltejs/svelte-preprocess
-  // for more information about preprocessors
-  preprocess: preprocess(),
+  preprocess: vitePreprocess(),
 
   kit: {
     adapter: adapter({
-      edge: true,
-      split: true
+      runtime: 'edge',
+      split: true,
     }),
-
-    prerender: {
-      default: true,
-    },
-
-    vite: () => {
-      return {
-        resolve: {
-          alias: {
-            $assets: path.resolve('./src/assets'),
-            $components: path.resolve('./src/components'),
-          },
-        },
-
-        plugins: [DotEnv(), imagetools()],
-      }
-    },
   },
 }
 
