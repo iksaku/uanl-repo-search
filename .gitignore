@@ -5,8 +5,8 @@ node_modules
 /package
 .env
 .env.*
-!.env.example
-.vercel
+.wrangler
+.dev.vars
 .output
 .idea
-/.vercel_build_output
+.scratch

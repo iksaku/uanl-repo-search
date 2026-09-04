@@ -3,12 +3,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter Var', 'Inter', 'system-ui']
-      }
+        sans: ['Inter Var', 'Inter', 'system-ui'],
+      },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/line-clamp'),
-  ],
+  plugins: [require('@tailwindcss/forms')],
 }
