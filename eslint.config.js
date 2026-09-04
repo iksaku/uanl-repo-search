@@ -9,6 +9,7 @@ export default ts.config(
     ignores: [
       '**/build/**',
       '**/.svelte-kit/**',
+      '**/.wrangler/**',
       '**/package/**',
       '**/node_modules/**',
       '**/*.cjs',

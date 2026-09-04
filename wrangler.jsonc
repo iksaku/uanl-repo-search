@@ -7,4 +7,14 @@
     "binding": "ASSETS",
   },
   "main": ".svelte-kit/cloudflare/_worker.js",
+  "kv_namespaces": [
+    {
+      "binding": "STATS_KV",
+      // Real namespace IDs are filled in by scripts/deploy-cloudflare.sh
+      // (wrangler kv namespace create). These placeholders keep local
+      // `wrangler dev` working via miniflare's in-memory KV.
+      "id": "00000000000000000000000000000000",
+      "preview_id": "00000000000000000000000000000000",
+    },
+  ],
 }

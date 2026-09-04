@@ -1,8 +1,7 @@
 # UANL Repo Search
 
 Discover repositories created by students and faculty of the Universidad Autónoma de Nuevo León.
-
-SvelteKit app deployed on Cloudflare Workers. The index page is prerendered (static assets); `/api/stats` is a Worker endpoint that aggregates counts from GitHub's GraphQL API.
+SvelteKit app deployed on Cloudflare Workers. The index page is prerendered (static assets); `/api/stats` is a Worker endpoint that aggregates counts from GitHub's GraphQL API, cached in three tiers: KV (`STATS_KV` binding, 24h TTL), the CDN edge cache (`s-maxage=86400`), and the browser (`max-age=300`).
 
 ## Developing
 

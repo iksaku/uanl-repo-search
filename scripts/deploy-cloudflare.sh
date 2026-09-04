@@ -184,7 +184,7 @@ finish() {
 # Replace the example below. Set TOTAL_STAGES to match the stages you write.
 # ──────────────────────────────────────────────────────────────────────────
 
-TOTAL_STAGES=5
+TOTAL_STAGES=7
 
 banner "UANL Repo Search — Deploy to Cloudflare Workers, decommission Vercel"
 
@@ -206,12 +206,54 @@ if pnpm exec wrangler secret list 2>/dev/null | grep -q GITHUB_TOKEN; then
 else
   warn "GITHUB_TOKEN secret is NOT set."
   note "Run ./scripts/setup-github-token.sh first, or set it directly:"
-  note "  printf '%s' \"\$TOKEN\" | pnpm exec wrangler secret put GITHUB_TOKEN"
+  note "  printf '%s' \"\$GITHUB_TOKEN\" | pnpm exec wrangler secret put GITHUB_TOKEN"
   confirm "Continue without the secret? (/api/stats will 500 in production)" || exit 1
 fi
 # ──────────────────────────────────────────────────────────────────────────
 
-# ── Stage 3: build + deploy ───────────────────────────────────────────────
+# ── Stage 3: KV namespace ─────────────────────────────────────────────────
+stage "Cloudflare: STATS_KV namespace"
+say "/api/stats caches its payload in KV (24h TTL) between the edge cache and"
+say "GitHub. The namespace must exist before deploy."
+if grep -q '"id": "00000000000000000000000000000000"' wrangler.jsonc; then
+  step "Creating the production namespace…"
+  KV_OUT=$(pnpm exec wrangler kv namespace create STATS_KV 2>&1)
+  printf '%s\n' "$KV_OUT"
+  KV_ID=$(printf '%s' "$KV_OUT" | sed -n 's/.*"id": *"\([a-f0-9]\{32\}\)".*/\1/p' | head -n1)
+  step "Creating the preview namespace (used by wrangler dev)…"
+  KV_PREVIEW_OUT=$(pnpm exec wrangler kv namespace create STATS_KV --preview 2>&1)
+  printf '%s\n' "$KV_PREVIEW_OUT"
+  KV_PREVIEW_ID=$(printf '%s' "$KV_PREVIEW_OUT" | sed -n 's/.*"preview_id": *"\([a-f0-9]\{32\}\)".*/\1/p' | head -n1)
+  if [[ -n "$KV_ID" && -n "$KV_PREVIEW_ID" ]]; then
+    sed -i "s/\"id\": \"00000000000000000000000000000000\"/\"id\": \"$KV_ID\"/" wrangler.jsonc
+    sed -i "s/\"preview_id\": \"00000000000000000000000000000000\"/\"preview_id\": \"$KV_PREVIEW_ID\"/" wrangler.jsonc
+    printf '  %s✓ wrote%s namespace IDs → wrangler.jsonc (commit this change)\n' "$GREEN" "$RESET"
+  else
+    warn "couldn't parse namespace IDs from the output above; fill wrangler.jsonc by hand"
+    SKIPPED+=("KV namespace IDs into wrangler.jsonc")
+  fi
+else
+  note "wrangler.jsonc already has real namespace IDs."
+fi
+# ──────────────────────────────────────────────────────────────────────────
+
+# ── Stage 4: GitHub integration for PR previews ───────────────────────────
+stage "Cloudflare: Workers Builds (GitHub previews)"
+say "Connecting the GitHub repo gives every branch/PR a preview deployment"
+say "automatically. One-time dashboard step."
+if confirm "Connect the repo to Workers Builds for PR previews?"; then
+  open_url "https://dash.cloudflare.com/?to=/:account/workers-and-pages/create"
+  step "Workers & Pages → Import a repository → pick iksaku/uanl-repo-search."
+  step "Build command: pnpm build · Deploy command: pnpm exec wrangler deploy"
+  step "  (or let it reuse wrangler.jsonc; no framework preset needed)."
+  step "Under Variables/Secrets for BOTH production and preview, add GITHUB_TOKEN."
+  pause "Repo connected and first build started?"
+else
+  note "Skipped. Deploys stay manual via wrangler deploy."
+fi
+# ──────────────────────────────────────────────────────────────────────────
+
+# ── Stage 5: build + deploy ───────────────────────────────────────────────
 stage "Cloudflare: build and deploy"
 step "Building the Worker + static assets…"
 pnpm build
@@ -224,7 +266,7 @@ if [[ -z "$DEPLOY_URL" ]]; then
 fi
 # ──────────────────────────────────────────────────────────────────────────
 
-# ── Stage 4: production smoke test ────────────────────────────────────────
+# ── Stage 6: production smoke test ────────────────────────────────────────
 stage "Cloudflare: production smoke test"
 say "Verifying the deployed site."
 step "GET $DEPLOY_URL/ → expect 200"
@@ -244,7 +286,7 @@ open_url "$DEPLOY_URL/"
 pause "Site loads and hydrates, with zero console errors in devtools?"
 # ──────────────────────────────────────────────────────────────────────────
 
-# ── Stage 5: cutover decision + Vercel decommission ───────────────────────
+# ── Stage 7: cutover decision + Vercel decommission ───────────────────────
 stage "Cutover and Vercel decommission"
 say "Decide how the site is reached, then retire Vercel."
 step "Option A (default): keep the workers.dev URL — nothing more to do."
